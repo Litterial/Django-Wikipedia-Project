@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wikipediaApp/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'wikipediaApp/css/bootstrap.css' %}">
+    <script src="{% static 'wikipediaApp/js/bootstrap.js' %}"></script>
+    <script src="{% static 'wikipediaApp/js/jquery-3.3.1.min.js' %}"></script>
+    <title>Title</title>
+</head>
+<body class="bodyContainter">
+<div class="pageContainer">
+    {% if user.is_authenticated %}
+    <div class="search">
+        <div class="nav-grid">
+            <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        </div>
+    </div>
+    {% else %}
+    <div class="search">
+        <div class='nav-grid'>
+            <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+        </div>
+    </div>
+        {% endif %}
+
+    {% block body %}
+    <div class="title">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non accumsan diam, vitae dapibus lectus. Maecenas feugiat urna felis. Praesent purus ligula, scelerisque vitae suscipit feugiat, commodo sit amet mi. Vestibulum congue velit nulla, quis semper ligula venenatis vel. Vestibulum scelerisque est nisi, eget pretium neque laoreet quis. Donec elit purus, maximus et magna ut, rhoncus malesuada urna. Mauris lorem lacus, suscipit a elit non, viverra imperdiet massa. Vestibulum ullamcorper venenatis condimentum. Donec auctor urna sem, nec finibus ante rutrum quis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam et ipsum pellentesque, lobortis neque vitae, volutpat dolor. Donec quis magna nisl. Pellentesque fermentum rutrum massa a blandit.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non accumsan diam, vitae dapibus lectus. Maecenas feugiat urna felis. Praesent purus ligula, scelerisque vitae suscipit feugiat, commodo sit amet mi. Vestibulum congue velit nulla, quis semper ligula venenatis vel. Vestibulum scelerisque est nisi, eget pretium neque laoreet quis. Donec elit purus, maximus et magna ut, rhoncus malesuada urna. Mauris lorem lacus, suscipit a elit non, viverra imperdiet massa. Vestibulum ullamcorper venenatis condimentum. Donec auctor urna sem, nec finibus ante rutrum quis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam et ipsum pellentesque, lobortis neque vitae, volutpat dolor. Donec quis magna nisl. Pellentesque fermentum rutrum massa a blandit.
+
+    </div>
+    <div class="article">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non accumsan diam, vitae dapibus lectus. Maecenas feugiat urna felis. Praesent purus ligula, scelerisque vitae suscipit feugiat, commodo sit amet mi. Vestibulum congue velit nulla, quis semper ligula venenatis vel. Vestibulum scelerisque est nisi, eget pretium neque laoreet quis. Donec elit purus, maximus et magna ut, rhoncus malesuada urna. Mauris lorem lacus, suscipit a elit non, viverra imperdiet massa. Vestibulum ullamcorper venenatis condimentum. Donec auctor urna sem, nec finibus ante rutrum quis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam et ipsum pellentesque, lobortis neque vitae, volutpat dolor. Donec quis magna nisl. Pellentesque fermentum rutrum massa a blandit.
+    </div>
+</div>
+{% endblock body %}
+</body>
+</html>

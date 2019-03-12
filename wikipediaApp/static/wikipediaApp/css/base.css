@@ -1,0 +1,82 @@
+.bodyContainter
+{
+height: 100vh;
+margin: 2% 5%;
+}
+
+.pageContainer
+{
+    display: grid;
+    grid-template-rows: 10% 1fr 2fr;
+    grid-row-gap:4vh;
+    row-gap:4vh;
+}
+.search,.article,.title,.big
+{
+    background-color:lightgreen;
+}
+.search
+{
+
+    grid-row:1;
+    grid-row-gap:20%;
+    row-gap:20%;
+}
+
+.title
+{
+    grid-row:2;
+    grid-row-gap:20%;
+    row-gap:20%;
+}
+
+
+.article
+{
+    grid-row:3;
+    grid-row-gap:20%;
+    row-gap:20%;
+}
+
+
+.nav-grid
+{
+    display:grid;
+    grid-template-areas: ". logged"
+    "nav-bar  search";
+    /*grid-template-columns: 1fr 1fr;*/
+
+}
+
+.logged
+{
+    grid-area: logged;
+    text-align: right;
+
+}
+
+.logged-padding
+{
+    padding-left:2%;
+}
+
+.nav-bar{
+    grid-area:nav-bar;
+}
+
+.searchbar{
+    grid-area:search;
+}
+
+.big
+{
+    grid-row:2/4
+
+}
+
+
+
+
+
+
+
