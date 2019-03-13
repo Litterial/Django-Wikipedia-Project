@@ -5,14 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-{% if articles %}
-{% for x in articles %}
-{x.title}<br>
-{x.text}<br>
-{x.date_created}<br>
-{x.last_update}<br>
-{x.image}<br>
+{% if userArticles %}
+{% for x in userArticles %}
+{{x.title}}<br>
+{{x.text}}<br>
+{{x.date_created}}<br>
+{{x.last_update}}<br>
+<img src="{{x.image.url}}"><br>
+<a href="{% url 'editArticle' x.id%}">Edit article</a>
+<a href="{url 'deleteArticle' x.id%}">Delete article</a>
 {% endfor %}
+{%else %}
+None
 {% endif %}
 </body>
 </html>

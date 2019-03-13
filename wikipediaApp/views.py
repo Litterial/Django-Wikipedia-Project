@@ -52,17 +52,33 @@ def createArticle(request): #creates new page, will create an id once created
 
 
 def userArticles(request):
-    test=Author.objects.all()
-    print(test)
     key=Author.objects.get(username=request.user)
+    print(key)
     user_article=Article.objects.filter(key_to_User=key)
     context={
         'userArticles':user_article
     }
-    return render (request,'wikipediaApp/userArticles.html')
+    return render (request,'wikipediaApp/userArticles.html',context)
 def editArticle(request,ID): #edits page,needs id of instance
-    ID=1
-    return render(request,'wikipediaApp/editArticle.html',{'ID':ID})
+    oldArticle=get_object_or_404(Article,pk=ID)
+    newArticle=ArticleForm(instance=oldArticle)
+    print(oldArticle.last_update)
+    if request.method=="POST":
+        newArticle=ArticleForm(request.POST,instance=oldArticle)
+        if newArticle.is_valid():
+            print(newArticle.last_update)
+
+            newArticle.save()
+            return redirect('congrats')
+        else:
+            newArticle=ArticleForm(request.POST,instance=oldArticle)
+            context={
+                'form':newArticle,
+                'errors':newArticle.errors,
+             }
+            return render(request,'wikipedia/editArticle.html',context)
+
+    return render(request,'wikipediaApp/editArticle.html',{'form':newArticle})
 
 def deleteArticle(request,ID): #deletes needs id of instace
     ID=1

@@ -8,7 +8,10 @@ class AuthorForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model=Article
-        fields=['title','text','image']
+        fields=['title','text','image','last_update']
+        widgets={
+            'last_update':forms.HiddenInput(),
+        }
 class RelatedForm(forms.ModelForm):
     class Meta:
         model=Related

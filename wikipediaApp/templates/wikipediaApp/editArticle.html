@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
     <title>Title</title>
 </head>
 <body>
-Edit A {{ID}}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>Submit</button>
+</form>
 </body>
 </html>

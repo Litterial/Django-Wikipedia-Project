@@ -7,12 +7,12 @@ urlpatterns=[
     path('congrats/',views.congrats,name='congrats'),
     path('createArticle/',views.createArticle,name='createArticle'),
     path('userArticles/',views.userArticles,name='userArticles'),
-
+    path('editArticle/<int:ID>/',views.editArticle,name='editArticle'),
 
 
     path('readArticle/<int:ID>/',views.readArticle,name='readArticle'),
 
-    path('editArticle/<int:ID>/',views.editArticle,name='editArticle'),
+
     path('deleteArticle/<int:ID>/',views.deleteArticle,name='deleteArticle'),
     path('createRelated/<int:ID>/',views.createRelated,name='createRelated'),
     path('readRelated/<int:ID>/',views.readRelated,name='readRelated'),
