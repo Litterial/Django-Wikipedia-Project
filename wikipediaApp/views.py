@@ -31,10 +31,35 @@ def readArticle(request,ID): #read individual articles
     return render(request,'wikipediaApp/readArticle.html')
 
 def createArticle(request): #creates new page, will create an id once created
-    allArticles=Article.objects.all()
-    print(allArticles)
-    return render(request,'wikipediaApp/createArticle.html',{'allArticles':allArticles})
+    form=ArticleForm(request.POST or None)
+    key=Author.objects.get(username=request.user)
+    if request.method =='POST': #if post request
+        if form.is_valid(): #if form is valid
+            print(form)
+            #The image is not a post, its a file. use request.FILES['name of varible in image']
+            Article.objects.create(title=request.POST['title'],text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
 
+            return redirect('congrats') #redirects user to a confirmation page
+        else:
+            form=ArticleForm(request.POST) #sends posted information back to form
+            context={
+                'form':form,
+                'errors':form.errors
+            }
+            return render(request,'wikipediaApp/createAuthor.html',context) #renders content on template with errors
+
+    return render(request,'wikipediaApp/createArticle.html',{'form':form})
+
+
+def userArticles(request):
+    test=Author.objects.all()
+    print(test)
+    key=Author.objects.get(username=request.user)
+    user_article=Article.objects.filter(key_to_User=key)
+    context={
+        'userArticles':user_article
+    }
+    return render (request,'wikipediaApp/userArticles.html')
 def editArticle(request,ID): #edits page,needs id of instance
     ID=1
     return render(request,'wikipediaApp/editArticle.html',{'ID':ID})

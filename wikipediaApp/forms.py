@@ -7,9 +7,9 @@ class AuthorForm(forms.ModelForm):
         exclude=['make_user']
 class ArticleForm(forms.ModelForm):
     class Meta:
-        models=Article
-        exclude=['date_created','last_updated']
+        model=Article
+        fields=['title','text','image']
 class RelatedForm(forms.ModelForm):
     class Meta:
-        models=Related
+        model=Related
         exclude=['date_created','last_updated']

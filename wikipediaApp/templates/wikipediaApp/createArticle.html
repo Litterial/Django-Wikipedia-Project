@@ -6,12 +6,10 @@
     {% load static %}
 </head>
 <body>
-{% if allArticles %}
-{% for x in allArticles %}
-<img src= "{{x.image.url}}">
-{% endfor %}
-{% else %}
-Hi
-{% endif %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>Submit</button>
+</form>
 </body>
 </html>
