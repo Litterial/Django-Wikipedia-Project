@@ -23,7 +23,7 @@ def createAuthor(request): #create an author
 
     return render(request,'wikipediaApp/createAuthor.html',{'form':form})
 
-def congrats(request):
+def congrats(request): #confirmation page
     return render(request,'wikipediaApp/congrats.html')
 
 
