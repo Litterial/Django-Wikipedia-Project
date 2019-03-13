@@ -4,7 +4,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 # Create your views here.
 def index(request):  #landing page
-    return render(request,'wikipediaApp/index.html')
+    allArticles=Article.objects.all()
+    return render(request,'wikipediaApp/index.html',{'allArticles':allArticles})
 
 def createAuthor(request): #create an author
     form=AuthorForm(request.POST or None) #submits blank form for get request, filled form for post request
@@ -27,8 +28,7 @@ def congrats(request): #confirmation page
     return render(request,'wikipediaApp/congrats.html')
 
 
-def readArticle(request,ID): #read individual articles
-    return render(request,'wikipediaApp/readArticle.html')
+
 
 def createArticle(request): #creates new page, will create an id once created
     form=ArticleForm(request.POST or None)
@@ -50,8 +50,12 @@ def createArticle(request): #creates new page, will create an id once created
 
     return render(request,'wikipediaApp/createArticle.html',{'form':form})
 
+def readArticle(request,ID): #read individual articles
+    oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
+    read=Article.objects.filter(id=ID)  #grabs instance of the old article
+    return render(request,'wikipediaApp/readArticle.html',{'Read':read})
 
-def userArticles(request):
+def userArticles(request): #list all of the user
     key=Author.objects.get(username=request.user)
     print(key)
     user_article=Article.objects.filter(key_to_User=key)
@@ -60,29 +64,31 @@ def userArticles(request):
     }
     return render (request,'wikipediaApp/userArticles.html',context)
 def editArticle(request,ID): #edits page,needs id of instance
-    oldArticle=get_object_or_404(Article,pk=ID)
-    newArticle=ArticleForm(instance=oldArticle)
-    print(oldArticle.last_update)
-    if request.method=="POST":
-        newArticle=ArticleForm(request.POST,instance=oldArticle)
-        if newArticle.is_valid():
-            print(newArticle.last_update)
-
-            newArticle.save()
-            return redirect('congrats')
+    oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
+    newArticle=ArticleForm(instance=oldArticle)  #grabs instance of the old article
+    if request.method=="POST": #if post methdod
+        newArticle=ArticleForm(request.POST,instance=oldArticle) #gets the post informations and use instance to reference the id so a new article isn't created
+        if newArticle.is_valid(): #if the article is valid
+            oldArticle.last_update=timezone.now()   #changes the time to the current time
+            newArticle.save() #saves the current time
+            return redirect('congrats')  #redirects to congrats
         else:
-            newArticle=ArticleForm(request.POST,instance=oldArticle)
+            newArticle=ArticleForm(request.POST,instance=oldArticle) #grabs the error-bound form
             context={
                 'form':newArticle,
                 'errors':newArticle.errors,
              }
-            return render(request,'wikipedia/editArticle.html',context)
+            return render(request,'wikipediaApp/editArticle.html',context) #renders the form with errors
 
-    return render(request,'wikipediaApp/editArticle.html',{'form':newArticle})
+    return render(request,'wikipediaApp/editArticle.html',{'form':newArticle}) #renders on the editarticle page
 
 def deleteArticle(request,ID): #deletes needs id of instace
-    ID=1
-    return render(request,'wikipediaApp/deleteArticle.html',{'ID':ID})
+    oldArticle=get_object_or_404(Article,pk=ID)
+    newArticle=ArticleForm(instance=oldArticle)
+    if request.method=='POST':
+        oldArticle.delete()
+        return redirect('congrats')
+    return render(request,'wikipediaApp/deleteArticle.html',{'form':newArticle})
 
 def readRelated(request,ID): #reads related needs id of parent
     ID=1

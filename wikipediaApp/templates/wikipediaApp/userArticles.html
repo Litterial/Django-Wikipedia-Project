@@ -7,13 +7,12 @@
 <body>
 {% if userArticles %}
 {% for x in userArticles %}
-{{x.title}}<br>
-{{x.text}}<br>
+<a href="{% url 'readArticle' x.id %}">{{x.title}}</a><br>
 {{x.date_created}}<br>
 {{x.last_update}}<br>
 <img src="{{x.image.url}}"><br>
 <a href="{% url 'editArticle' x.id%}">Edit article</a>
-<a href="{url 'deleteArticle' x.id%}">Delete article</a>
+<a href="{% url 'deleteArticle' x.id%}">Delete article</a>
 {% endfor %}
 {%else %}
 None
