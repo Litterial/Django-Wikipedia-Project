@@ -7,15 +7,19 @@
 <body>
 {% if userArticles %}
 {% for x in userArticles %}
+<h1>Article</h1>
 <a href="{% url 'readArticle' x.id %}">{{x.title}}</a><br>
 {{x.date_created}}<br>
 {{x.last_update}}<br>
 <img src="{{x.image.url}}"><br>
 <a href="{% url 'editArticle' x.id%}">Edit article</a>
-<a href="{% url 'deleteArticle' x.id%}">Delete article</a>
+<a href="{% url 'deleteArticle' x.id%}">Delete article</a><br>
+<h1>Related Items</h1>
+<a href="{% url 'createRelated' x.id%}">Create Related</a>
 {% endfor %}
 {%else %}
 None
 {% endif %}
+
 </body>
 </html>

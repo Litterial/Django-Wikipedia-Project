@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-create R
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>Submit</button>
+</form>
 </body>
 </html>

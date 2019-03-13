@@ -91,17 +91,50 @@ def deleteArticle(request,ID): #deletes needs id of instace
     return render(request,'wikipediaApp/deleteArticle.html',{'form':newArticle})
 
 def readRelated(request,ID): #reads related needs id of parent
-    ID=1
+
     return render(request,'wikipediaApp/readRelated.html',{'ID':ID})
 
 def createRelated(request,ID): #creates related needs id of parent
-    ID=1
-    return render(request,'wikipediaApp/createRelated.html',{'ID':ID})
+    articleID=get_object_or_404(Article,pk=ID)
+    form=RelatedForm(request.POST or None)
+    if request.method =='POST': #if post request
+        if form.is_valid(): #if form is valid
+            print(form)
+            #The image is not a post, its a file. use request.FILES['name of varible in image']
+            Related.objects.create(title=request.POST['title'],text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_article=articleID)
+
+            return redirect('congrats') #redirects user to a confirmation page
+        else:
+            form=RelatedForm(request.POST) #sends posted information back to form
+            context={
+                'form':form,
+                'errors':form.errors
+            }
+            return render(request,'wikipediaApp/createRelated.html',context) #renders content on template with errors
+    return render(request,'wikipediaApp/createRelated.html',{'form':form})
 
 def editRelated(request,ID): #edits related needs id of parent
-    ID=1
-    return render(request,'wikipediaApp/editRelated.html',{'ID':ID})
+    oldRelated=get_object_or_404(Related,pk=ID) #grabs id of the article
+    newRelated=RelatedForm(instance=Related)  #grabs instance of the old article
+    if request.method=="POST": #if post methdod
+        newRelated=RelatedForm(request.POST,instance=Related) #gets the post informations and use instance to reference the id so a new article isn't created
+        if newRelated.is_valid(): #if the article is valid
+            oldRelated.last_update=timezone.now()   #changes the time to the current time
+            newRelated.save() #saves the current time
+            return redirect('congrats')  #redirects to congrats
+        else:
+            newRelated=RelatedForm(request.POST,instance=Related) #grabs the error-bound form
+            context={
+                'form':newRelated,
+                'errors':newRelated.errors,
+            }
+            return render(request,'wikipediaApp/editRelated.html',context) #renders the form with errors    return render(request,'wikipediaApp/editRelated.html',{'ID':ID})
+    return render(request,'wikipediaApp/editRelated.html',{'form':newRelated})
 
 def deleteRelated(request,ID): #deletes related neeeds id of parent
-    ID=1
-    return render(request,'wikipediaApp/deleteRelated.html',{'ID':ID})
+    oldRelated=get_object_or_404(Related,pk=ID)
+    newRelated=RelatedForm(instance=Related)
+    if request.method=='POST':
+        oldRelated.delete()
+        return redirect('congrats')
+    return render(request,'wikipediaApp/deleteRelated.html',{'form':newRelated})

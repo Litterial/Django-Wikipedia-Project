@@ -15,4 +15,7 @@ class ArticleForm(forms.ModelForm):
 class RelatedForm(forms.ModelForm):
     class Meta:
         model=Related
-        exclude=['date_created','last_updated']
+        fields=['title','text','image','last_update']
+        widgets={
+            'last_update':forms.HiddenInput(),
+        }
