@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% load static %}
 </head>
 <body>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>Submit</button>
-</form>
+{% if allArticles %}
+{% for x in allArticles %}
+<img src= "{{x.image.url}}">
+{% endfor %}
+{% endif %}
 </body>
 </html>

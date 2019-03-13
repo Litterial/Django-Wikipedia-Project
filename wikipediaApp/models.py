@@ -17,7 +17,7 @@ class Article(models.Model):
     text=models.TextField()
     date_created=models.DateTimeField(timezone.now())
     last_update=models.DateTimeField(timezone.now())
-    models.CharField(max_length=200)
+    image=models.ImageField(upload_to='Images',blank=True)
     key_to_User=models.ForeignKey(Author,on_delete=models.CASCADE,blank=True,null=True)
 
     def __str__(self):
@@ -28,7 +28,7 @@ class Related(models.Model):
     text=models.TextField()
     date_created=models.DateTimeField(timezone.now())
     last_update=models.DateTimeField(timezone.now())
-    models.CharField(max_length=200)
+    image=models.ImageField(upload_to='Images',blank=True)
     key_to_Article=models.ForeignKey(Article,on_delete=models.CASCADE,blank=True,null=True)
 
     def __str__(self):

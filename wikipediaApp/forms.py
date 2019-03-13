@@ -8,17 +8,8 @@ class AuthorForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         models=Article
-        exclude=['last_updated']
-class RelatedForm(forms.ModelForm):
-    class Meta:
-        models=Related
-        exclude=['last_updated']
-class editArticleForm(forms.ModelForm):
-    class Meta:
-        model=Article
         exclude=['date_created','last_updated']
-
-class editRelatedForm(forms.ModelForm):
+class RelatedForm(forms.ModelForm):
     class Meta:
         models=Related
         exclude=['date_created','last_updated']
