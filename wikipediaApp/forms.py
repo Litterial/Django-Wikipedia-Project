@@ -11,6 +11,8 @@ class ArticleForm(forms.ModelForm):
         fields=['title','text','image','key_to_User']
 
         widgets={
+            'title':forms.TextInput(attrs={'class':'titleBar'}),
+            'text':forms.Textarea(attrs={'class':'wideTextarea'}),
            'key_to_User':forms.HiddenInput,
         }
 

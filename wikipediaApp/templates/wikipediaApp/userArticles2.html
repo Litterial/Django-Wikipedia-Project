@@ -1,0 +1,25 @@
+{% extends 'wikipediaApp/base3.html' %}
+
+{% load static %}
+
+{% block body %}
+<div class="big">
+    {% if userArticles %}
+    <h1 class="mid">Articles by {{user.username}}</h1>
+<div class="articleGrid">
+    {% for x in userArticles %}
+    <ul>
+        {% if x.image %}
+        <li class="list-group list-group-flush"><img src="{{x.image.url}}"></li>
+        {% endif %}
+        <li class="list-group list-group-flush"><h3><a class="font-weight-bolder" href="{% url 'readArticle' x.id %}">{{x.title}}</a></h3></li>
+    <li class="list-group list-group-flush"> Date Created:{{x.date_created}} UTC</li>
+    <li class="list-group list-group-flush"> Last Update:{{x.last_update}} UTC</li>
+    </ul>
+    {% endfor %}
+    {%else %}
+    None
+    {% endif %}
+</div>
+</div>
+{% endblock body %}

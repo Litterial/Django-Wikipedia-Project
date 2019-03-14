@@ -61,7 +61,7 @@ def readArticle(request,ID): #read individual articles
         'readArticle':readArticle,
         'readRelated':readRelated,
     }
-    return render(request,'wikipediaApp/readArticle.html',context)
+    return render(request,'wikipediaApp/readArticle2.html',context)
 
 def userArticles(request): #list all of the user
     key=Author.objects.get(username=request.user)
@@ -70,7 +70,7 @@ def userArticles(request): #list all of the user
     context={
         'userArticles':user_article
     }
-    return render (request,'wikipediaApp/userArticles.html',context)
+    return render (request,'wikipediaApp/userArticles2.html',context)
 def editArticle(request,ID): #edits page,needs id of instance
     oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
     newArticle=ArticleForm(instance=oldArticle)  #grabs instance of the old article

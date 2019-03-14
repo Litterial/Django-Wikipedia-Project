@@ -6,8 +6,11 @@
 <div class="big">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        <div class="formCenter">
         {{form.as_p}}
+
         <button>Submit</button>
+        </div>
     </form>
 </div>
 {% endblock body %}

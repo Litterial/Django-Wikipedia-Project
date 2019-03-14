@@ -18,7 +18,7 @@
             <div class="nav-bar card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                        <a class='nav-link active' href="{% url 'index' %}">Home</a>
+                        <a class='nav-link ' href="{% url 'index' %}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
@@ -49,7 +49,7 @@
             </form>
         </div>
     </div>
-        {% endif %}
+    {% endif %}
 
     {% block body %}
     <div class="title">

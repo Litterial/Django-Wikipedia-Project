@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {% load static %}
-    <title>Title</title>
-</head>
-<body>
+{% extends 'wikipediaApp/base4.html' %}
+
+{% load static %}
+
+{% block body %}
+<div class="big">
 {% if readArticle %}
 {% for x in readArticle %}
 
@@ -38,5 +36,6 @@ None
 none
 {% endif %}
 
-</body>
-</html>
+</div>
+</div>
+{% endblock body %}
