@@ -21,7 +21,9 @@
 {{y.text}}<br>
 {{y.date_created}}<br>
 {{y.last_update}}<br>
+{% if y.image %}}
 <img src="{{y.image.url}}">
+{% endif %}
 <a href="{% url 'editRelated' y.id %}">Edit Related</a>
 <a href="{% url 'deleteRelated' y.id %}">Delete Related</a>
 {% endfor %}

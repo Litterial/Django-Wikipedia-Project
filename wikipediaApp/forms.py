@@ -8,7 +8,11 @@ class AuthorForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model=Article
-        fields=['title','text','image',]
+        fields=['title','text','image','key_to_User']
+
+        widgets={
+           'key_to_User':forms.HiddenInput,
+        }
 
 
 
@@ -17,5 +21,3 @@ class RelatedForm(forms.ModelForm):
         model=Related
         fields=['title','text','image',]
 
-class SearchForm (forms.Form):
-    search=forms.CharField(max_length=255)

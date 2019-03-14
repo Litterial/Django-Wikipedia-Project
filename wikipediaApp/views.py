@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
-from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm,SearchForm
+from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm
 from django.utils import timezone
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -33,14 +33,13 @@ def congrats(request): #confirmation page
 def createArticle(request): #creates new page, will create an id once created
     form=ArticleForm(request.POST or None,)
     key=Author.objects.get(username=request.user)
-    print(key)
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
-
             #The image is not a post, its a file. use request.FILES['name of varible in image']
-            Article.objects.create (title=request.POST['title'],text=request.POST['text'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
-
-            form.save()
+            newForm = form.save(commit=False)
+            newForm.key_to_User = key
+            print(newForm.key_to_User)
+            newForm.save()
             # Article.objects.create(,text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
             return redirect('congrats') #redirects user to a confirmation page
 
@@ -50,9 +49,9 @@ def createArticle(request): #creates new page, will create an id once created
                 'form':form,
                 'errors':form.errors
             }
-            return render(request,'wikipediaApp/createAuthor.html',context) #renders content on template with errors
+            return render(request,'wikipediaApp/createArticle2.html',context) #renders content on template with errors
 
-    return render(request,'wikipediaApp/createArticle.html',{'form':form})
+    return render(request,'wikipediaApp/createArticle2.html',{'form':form})
 
 def readArticle(request,ID): #read individual articles
     oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
@@ -113,7 +112,10 @@ def createRelated(request,ID): #creates related needs id of parent
         if form.is_valid(): #if form is valid
             print(form)
             #The image is not a post, its a file. use request.FILES['name of varible in image']
-            Related.objects.create(title=request.POST['title'],text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_Article=articleID)
+            newForm = form.save(commit=False)
+            newForm.key_to_Article = articleID
+
+            newForm.save()
             return redirect('congrats') #redirects user to a confirmation page
         else:
             form=RelatedForm(request.POST) #sends posted information back to form
@@ -152,18 +154,15 @@ def deleteRelated(request,ID): #deletes related neeeds id of parent
     }
     return render(request,'wikipediaApp/deleteRelated.html',context)
 
-def search(request):
-    form=SearchForm(request.POST or None)
+def search(request, ):
 
-    if request.method=='POST':
-        if form.is_valid:
-            search=request.POST['search']
-            articleSearch=Article.objects.filter(Q(title__icontains=search))
-            context={
-                'search':search,
-                'articleSearch':articleSearch
-            }
+    search=request.POST['find']
+    articleSearch=Article.objects.filter(Q(title__icontains=search))
+    context={
+        'search':search,
+        'articleSearch':articleSearch,
+    }
 
-            return render(request,'wikipediaApp/congrats.html',context)
+    return render(request,'wikipediaApp/congrats.html',context)
 
-    return render(request,'wikipediaApp/search.html',{'form':form})
+
