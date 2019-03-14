@@ -3,11 +3,23 @@
 {% load static %}
 
 {% block body %}
-<div class="big">
+<div class="big readGrid">
 {% if readArticle %}
 {% for x in readArticle %}
-    <div class="titleDiv">
     <h1 class="readTitle">{{x.title}}</h1>
+
+    <div class=" readNav nav-bar card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class='nav-link active' href="{% url 'index' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+            </li>
+            <li class="nav-item">
+                <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+            </li>
+        </ul>
     </div>
 <div class="text-margin">
     {{x.text}}
