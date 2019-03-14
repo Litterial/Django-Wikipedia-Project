@@ -6,9 +6,12 @@
 <div class="big">
 {% if readArticle %}
 {% for x in readArticle %}
-
-{{x.title}}<br>
-{{x.text}}<br>
+    <div class="titleDiv">
+    <h1 class="readTitle">{{x.title}}</h1>
+    </div>
+<div class="text-margin">
+    {{x.text}}
+</div>
 <a href="{% url 'editArticle' x.id%}">Edit article</a>
 <a href="{% url 'deleteArticle' x.id%}">Delete article</a><br>
 <h1>This article was created on {{x.date_created}}</h1>
@@ -17,7 +20,7 @@
 <hr>
 {% if readRelated %}
 {% for y in readRelated %}
-{{y.title}}<br>
+<h1>{{y.title}}<br>
 {{y.text}}<br>
 {{y.date_created}}<br>
 {{y.last_update}}<br>

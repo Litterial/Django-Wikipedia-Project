@@ -106,7 +106,7 @@ margin: 2% 5%;
     text-align: center;
     padding-bottom:2% ;
 }
-/*Edit page/submit */
+/***********************************************Create/Edit Page*******************************************************/
 .titleBar
 {
     /*display:flex;*/
@@ -130,3 +130,18 @@ textarea
 
 }
 
+/***********************************************Read Page**************************************************************/
+
+
+
+.readTitle
+{
+    padding-top: 3%;
+    padding-left:1%;
+    border-bottom: 3px solid black;
+}
+
+.text-margin
+{
+    margin:2% 10%;
+}
