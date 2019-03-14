@@ -5,6 +5,14 @@
     <title>Title</title>
 </head>
 <body>
+{% if search %}
+{{search}}
+{% endif %}
+{% if articleSearch %}
+{% for x in articleSearch %}
+{{x.title}}
+{% endfor %}
+{% endif %}
 congrats
 <a href="{% url 'index' %}">Click here to return home</a>
 </body>

@@ -21,5 +21,8 @@ urlpatterns=[
     path('editRelated/<int:ID>/',views.editRelated,name='editRelated'),
     path('deleteRelated/<int:ID>/',views.deleteRelated,name='deleteRelated'),
 
+    path('search/',views.search,name='search'),
+
+
 
 ]

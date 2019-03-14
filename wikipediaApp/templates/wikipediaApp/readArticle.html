@@ -2,16 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
     <title>Title</title>
 </head>
 <body>
-{% if Read %}
-{% for x in Read %}
+{% if readArticle %}
+{% for x in readArticle %}
 
 {{x.title}}<br>
 {{x.text}}<br>
 <h1>This article was created on {{x.date_created}}</h1>
 <h1>Last updated: {{x.last_update}}UTC</h1>
+<h1>Related Items</h1>
+<hr>
+{% if readRelated %}
+{% for y in readRelated %}
+{{y.title}}<br>
+{{y.text}}<br>
+{{y.date_created}}<br>
+{{y.last_update}}<br>
+<img src="{{y.image.url}}">
+<a href="{% url 'editRelated' y.id %}">Edit Related</a>
+<a href="{% url 'deleteRelated' y.id %}">Delete Related</a>
+{% endfor %}
+{% else %}
+None
+{% endif %}
+<a href="{% url 'createRelated' x.id %}">Create Related</a>
 {% endfor %}
 {% else %}
 none

@@ -8,14 +8,14 @@ class AuthorForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model=Article
-        fields=['title','text','image','last_update']
-        widgets={
-            'last_update':forms.HiddenInput(),
-        }
+        fields=['title','text','image',]
+
+
+
 class RelatedForm(forms.ModelForm):
     class Meta:
         model=Related
-        fields=['title','text','image','last_update']
-        widgets={
-            'last_update':forms.HiddenInput(),
-        }
+        fields=['title','text','image',]
+
+class SearchForm (forms.Form):
+    search=forms.CharField(max_length=255)

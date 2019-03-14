@@ -11,11 +11,11 @@
 <a href="{% url 'readArticle' x.id %}">{{x.title}}</a><br>
 {{x.date_created}}<br>
 {{x.last_update}}<br>
+{% if x.image %}
 <img src="{{x.image.url}}"><br>
+{% endif %}
 <a href="{% url 'editArticle' x.id%}">Edit article</a>
 <a href="{% url 'deleteArticle' x.id%}">Delete article</a><br>
-<h1>Related Items</h1>
-<a href="{% url 'createRelated' x.id%}">Create Related</a>
 {% endfor %}
 {%else %}
 None

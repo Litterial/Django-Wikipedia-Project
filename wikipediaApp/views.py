@@ -1,6 +1,7 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm
+from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
+from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm,SearchForm
 from django.utils import timezone
+from django.db.models import Q
 from django.contrib.auth.models import User
 # Create your views here.
 def index(request):  #landing page
@@ -29,19 +30,22 @@ def congrats(request): #confirmation page
 
 
 
-
 def createArticle(request): #creates new page, will create an id once created
-    form=ArticleForm(request.POST or None)
+    form=ArticleForm(request.POST or None,)
     key=Author.objects.get(username=request.user)
+    print(key)
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
-            print(form)
-            #The image is not a post, its a file. use request.FILES['name of varible in image']
-            Article.objects.create(title=request.POST['title'],text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
 
+            #The image is not a post, its a file. use request.FILES['name of varible in image']
+            Article.objects.create (title=request.POST['title'],text=request.POST['text'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
+
+            form.save()
+            # Article.objects.create(,text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
             return redirect('congrats') #redirects user to a confirmation page
+
         else:
-            form=ArticleForm(request.POST) #sends posted information back to form
+            form=ArticleForm(request.POST,request.FILES) #sends posted information back to form
             context={
                 'form':form,
                 'errors':form.errors
@@ -52,8 +56,13 @@ def createArticle(request): #creates new page, will create an id once created
 
 def readArticle(request,ID): #read individual articles
     oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
-    read=Article.objects.filter(id=ID)  #grabs instance of the old article
-    return render(request,'wikipediaApp/readArticle.html',{'Read':read})
+    readArticle=Article.objects.filter(id=ID)  #grabs instance of the old article
+    readRelated=Related.objects.filter(key_to_Article=oldArticle)
+    context={
+        'readArticle':readArticle,
+        'readRelated':readRelated,
+    }
+    return render(request,'wikipediaApp/readArticle.html',context)
 
 def userArticles(request): #list all of the user
     key=Author.objects.get(username=request.user)
@@ -67,7 +76,7 @@ def editArticle(request,ID): #edits page,needs id of instance
     oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
     newArticle=ArticleForm(instance=oldArticle)  #grabs instance of the old article
     if request.method=="POST": #if post methdod
-        newArticle=ArticleForm(request.POST,instance=oldArticle) #gets the post informations and use instance to reference the id so a new article isn't created
+        newArticle=ArticleForm(request.POST,request.FILES,instance=oldArticle) #gets the post informations and use instance to reference the id so a new article isn't created
         if newArticle.is_valid(): #if the article is valid
             oldArticle.last_update=timezone.now()   #changes the time to the current time
             newArticle.save() #saves the current time
@@ -84,11 +93,14 @@ def editArticle(request,ID): #edits page,needs id of instance
 
 def deleteArticle(request,ID): #deletes needs id of instace
     oldArticle=get_object_or_404(Article,pk=ID)
-    newArticle=ArticleForm(instance=oldArticle)
+    # newArticle=ArticleForm(instance=oldArticle)
     if request.method=='POST':
         oldArticle.delete()
         return redirect('congrats')
-    return render(request,'wikipediaApp/deleteArticle.html',{'form':newArticle})
+    context={
+        "oldArticle":oldArticle,
+    }
+    return render(request,'wikipediaApp/deleteArticle.html',context)
 
 def readRelated(request,ID): #reads related needs id of parent
 
@@ -101,8 +113,7 @@ def createRelated(request,ID): #creates related needs id of parent
         if form.is_valid(): #if form is valid
             print(form)
             #The image is not a post, its a file. use request.FILES['name of varible in image']
-            Related.objects.create(title=request.POST['title'],text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_article=articleID)
-
+            Related.objects.create(title=request.POST['title'],text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_Article=articleID)
             return redirect('congrats') #redirects user to a confirmation page
         else:
             form=RelatedForm(request.POST) #sends posted information back to form
@@ -117,7 +128,7 @@ def editRelated(request,ID): #edits related needs id of parent
     oldRelated=get_object_or_404(Related,pk=ID) #grabs id of the article
     newRelated=RelatedForm(instance=Related)  #grabs instance of the old article
     if request.method=="POST": #if post methdod
-        newRelated=RelatedForm(request.POST,instance=Related) #gets the post informations and use instance to reference the id so a new article isn't created
+        newRelated=RelatedForm(request.POST,request.FILES,instance=Related) #gets the post informations and use instance to reference the id so a new article isn't created
         if newRelated.is_valid(): #if the article is valid
             oldRelated.last_update=timezone.now()   #changes the time to the current time
             newRelated.save() #saves the current time
@@ -133,8 +144,26 @@ def editRelated(request,ID): #edits related needs id of parent
 
 def deleteRelated(request,ID): #deletes related neeeds id of parent
     oldRelated=get_object_or_404(Related,pk=ID)
-    newRelated=RelatedForm(instance=Related)
     if request.method=='POST':
         oldRelated.delete()
         return redirect('congrats')
-    return render(request,'wikipediaApp/deleteRelated.html',{'form':newRelated})
+    context={
+        'oldRelated':oldRelated
+    }
+    return render(request,'wikipediaApp/deleteRelated.html',context)
+
+def search(request):
+    form=SearchForm(request.POST or None)
+
+    if request.method=='POST':
+        if form.is_valid:
+            search=request.POST['search']
+            articleSearch=Article.objects.filter(Q(title__icontains=search))
+            context={
+                'search':search,
+                'articleSearch':articleSearch
+            }
+
+            return render(request,'wikipediaApp/congrats.html',context)
+
+    return render(request,'wikipediaApp/search.html',{'form':form})
