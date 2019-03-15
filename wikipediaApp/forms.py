@@ -9,7 +9,6 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model=Article
         fields=['title','text','image','key_to_User']
-
         widgets={
             'title':forms.TextInput(attrs={'class':'titleBar'}),
             'text':forms.Textarea(attrs={'class':'wideTextarea'}),
@@ -21,5 +20,11 @@ class ArticleForm(forms.ModelForm):
 class RelatedForm(forms.ModelForm):
     class Meta:
         model=Related
-        fields=['title','text','image',]
+        fields=['title','text','image','key_to_Article']
+
+        widgets={
+            'title':forms.TextInput(attrs={'class':'titleBar'}),
+            'text':forms.Textarea(attrs={'class':'wideTextarea'}),
+            'key_to_Article':forms.HiddenInput,
+        }
 

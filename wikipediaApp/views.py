@@ -73,6 +73,7 @@ def userArticles(request): #list all of the user
     return render (request,'wikipediaApp/userArticles2.html',context)
 def editArticle(request,ID): #edits page,needs id of instance
     oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
+    showArticle=Article.objects.filter(id=oldArticle.id)
     newArticle=ArticleForm(instance=oldArticle)  #grabs instance of the old article
     if request.method=="POST": #if post methdod
         newArticle=ArticleForm(request.POST,request.FILES,instance=oldArticle) #gets the post informations and use instance to reference the id so a new article isn't created
@@ -86,9 +87,13 @@ def editArticle(request,ID): #edits page,needs id of instance
                 'form':newArticle,
                 'errors':newArticle.errors,
              }
-            return render(request,'wikipediaApp/editArticle.html',context) #renders the form with errors
+            return render(request,'wikipediaApp/editArticle2.html',context) #renders the form with errors
 
-    return render(request,'wikipediaApp/editArticle.html',{'form':newArticle}) #renders on the editarticle page
+    context={
+        'form':newArticle,
+        'readArticle':showArticle,
+    }
+    return render(request,'wikipediaApp/editArticle2.html',context) #renders on the editarticle page
 
 def deleteArticle(request,ID): #deletes needs id of instace
     oldArticle=get_object_or_404(Article,pk=ID)
@@ -128,15 +133,15 @@ def createRelated(request,ID): #creates related needs id of parent
 
 def editRelated(request,ID): #edits related needs id of parent
     oldRelated=get_object_or_404(Related,pk=ID) #grabs id of the article
-    newRelated=RelatedForm(instance=Related)  #grabs instance of the old article
+    newRelated=RelatedForm(instance=oldRelated)  #grabs instance of the old article
     if request.method=="POST": #if post methdod
-        newRelated=RelatedForm(request.POST,request.FILES,instance=Related) #gets the post informations and use instance to reference the id so a new article isn't created
+        newRelated=RelatedForm(request.POST,request.FILES,instance=oldRelated) #gets the post informations and use instance to reference the id so a new article isn't created
         if newRelated.is_valid(): #if the article is valid
             oldRelated.last_update=timezone.now()   #changes the time to the current time
             newRelated.save() #saves the current time
             return redirect('congrats')  #redirects to congrats
         else:
-            newRelated=RelatedForm(request.POST,instance=Related) #grabs the error-bound form
+            newRelated=RelatedForm(request.POST,instance=oldRelated) #grabs the error-bound form
             context={
                 'form':newRelated,
                 'errors':newRelated.errors,

@@ -32,18 +32,18 @@
             </div>
             <div  class="searchbar">
                 <div class=" readNav card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class='nav-link active ' href="{% url 'readArticle' x.id%}">Read</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'editArticle' x.id %}">Edit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'deleteArticle' x.id %}">Delete</a>
-                    </li>
-                </ul>
-            </div>
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class='nav-link  ' href="{% url 'readArticle' x.id%}">Read</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class='nav-link active' href="{% url 'editArticle' x.id %}">Edit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class='nav-link' href="{% url 'deleteArticle' x.id %}">Delete</a>
+                        </li>
+                    </ul>
+                </div>
                 <form class='searchbar-inner' action= "{% url 'search'  %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name=find placeholder="Search">

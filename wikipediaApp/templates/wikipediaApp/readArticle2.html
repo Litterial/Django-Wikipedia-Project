@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block body %}
+{% if user.is_authenticated %}
 <div class="big readGrid">
 {% if readArticle %}
 {% for x in readArticle %}
@@ -13,25 +14,34 @@
     {{x.text}}
 </div>
 {% if x.image %}
+    <div class= "img-grid">
     <img src="{{x.image.url}}">
+    </div>
 {% endif %}
 <footer class="update">
-<span> Date:created{{x.date_created}}</span>
+<span> Date created:{{x.date_created}}</span>
 <span>Last updated: {{x.last_update}}UTC</span>
 </footer>
-<h1>Related Items</h1>
+    <div class="sidebarGrid">
+        <h3 class="sidebarTitle">Related Items</h3>
 <hr>
+
 {% if readRelated %}
+
 {% for y in readRelated %}
-<h1>{{y.title}}<br>
-{{y.text}}<br>
-{{y.date_created}}<br>
-{{y.last_update}}<br>
-{% if y.image %}}
+<div class="sidetext">
+<div class="relatedTitle">{{y.title}}</div>
+{% if y.image %}
+    <div class="relatedimg">
 <img src="{{y.image.url}}">
+    </div>
 {% endif %}
-<a href="{% url 'editRelated' y.id %}">Edit Related</a>
-<a href="{% url 'deleteRelated' y.id %}">Delete Related</a>
+{{y.text}}<br>
+<div class="relatedimg buttonmargin">
+<a class="editmargin" href="{% url 'editRelated' y.id %}"><button>Edit Related</button></a>
+    <a href="{% url 'deleteRelated' y.id %}"><button>Delete Related</button></a>
+</div>
+</div>
 {% endfor %}
 {% else %}
 None
@@ -40,8 +50,54 @@ None
 {% endfor %}
 {% else %}
 none
-{% endif %}
-
 </div>
+{% endif %}
+{% else %}
+    <div class="big readGrid">
+        {% if readArticle %}
+        {% for x in readArticle %}
+        <h1 class="readTitle">{{x.title}}</h1>
+
+        <div class="text-margin">
+
+            {{x.text}}
+        </div>
+        {% if x.image %}
+        <div class= "img-grid">
+            <img src="{{x.image.url}}">
+        </div>
+        {% endif %}
+        <footer class="update">
+            <span> Date created:{{x.date_created}}</span>
+            <span>Last updated: {{x.last_update}}UTC</span>
+        </footer>
+        <div class="sidebarGrid">
+            <h3 class="sidebarTitle">Related Items</h3>
+            <hr>
+
+            {% if readRelated %}
+
+            {% for y in readRelated %}
+            <div class="sidetext">
+                <div class="relatedTitle">{{y.title}}</div>
+                {% if y.image %}
+                <div class="relatedimg">
+                    <img src="{{y.image.url}}">
+                </div>
+                {% endif %}
+                {{y.text}}<br>
+            </div>
+            {% endfor %}
+            {% else %}
+            None
+            {% endif %}
+
+            {% endfor %}
+            {% else %}
+            none
+        </div>
+        {% endif %}
+</div>
+    {% endif %}
 </div>
 {% endblock body %}
