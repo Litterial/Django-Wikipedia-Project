@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm
 from django.utils import timezone
@@ -14,7 +15,7 @@ def createAuthor(request): #create an author
         if form.is_valid(): #if form is valid
             User.objects.create_user(username=request.POST['username'],password=request.POST['password']) #create user
             form.save()#saves info in models
-            return redirect('congrats') #redirects user to a confirmation page
+            return redirect('index') #redirects user to a confirmation page
         else:
             form=AuthorForm(request.POST) #sends posted information back to form
             context={
@@ -29,7 +30,7 @@ def congrats(request): #confirmation page
     return render(request,'wikipediaApp/congrats.html')
 
 
-
+@login_required
 def createArticle(request): #creates new page, will create an id once created
     form=ArticleForm(request.POST or None,)
     key=Author.objects.get(username=request.user)
@@ -62,7 +63,7 @@ def readArticle(request,ID): #read individual articles
         'readRelated':readRelated,
     }
     return render(request,'wikipediaApp/readArticle2.html',context)
-
+@login_required
 def userArticles(request): #list all of the user
     key=Author.objects.get(username=request.user)
     print(key)
@@ -80,12 +81,13 @@ def editArticle(request,ID): #edits page,needs id of instance
         if newArticle.is_valid(): #if the article is valid
             oldArticle.last_update=timezone.now()   #changes the time to the current time
             newArticle.save() #saves the current time
-            return redirect('congrats')  #redirects to congrats
+            return redirect('readArticle',oldArticle.id)  #redirects to congrats
         else:
             newArticle=ArticleForm(request.POST,instance=oldArticle) #grabs the error-bound form
             context={
                 'form':newArticle,
                 'errors':newArticle.errors,
+                'readArticle':showArticle,
              }
             return render(request,'wikipediaApp/editArticle2.html',context) #renders the form with errors
 
@@ -98,9 +100,10 @@ def editArticle(request,ID): #edits page,needs id of instance
 def deleteArticle(request,ID): #deletes needs id of instace
     oldArticle=get_object_or_404(Article,pk=ID)
     # newArticle=ArticleForm(instance=oldArticle)
+
     if request.method=='POST':
         oldArticle.delete()
-        return redirect('congrats')
+        return redirect('userArticles')
     context={
         "oldArticle":oldArticle,
     }
@@ -133,21 +136,30 @@ def createRelated(request,ID): #creates related needs id of parent
 
 def editRelated(request,ID): #edits related needs id of parent
     oldRelated=get_object_or_404(Related,pk=ID) #grabs id of the article
+    showRelated=Article.objects.filter(related=oldRelated)
+    test=Article.objects.get(related=oldRelated)
+    print(test)
+    print(test.id)
     newRelated=RelatedForm(instance=oldRelated)  #grabs instance of the old article
     if request.method=="POST": #if post methdod
         newRelated=RelatedForm(request.POST,request.FILES,instance=oldRelated) #gets the post informations and use instance to reference the id so a new article isn't created
         if newRelated.is_valid(): #if the article is valid
             oldRelated.last_update=timezone.now()   #changes the time to the current time
             newRelated.save() #saves the current time
-            return redirect('congrats')  #redirects to congrats
+            return redirect('readArticle',test.id)  #redirects to congrats
         else:
             newRelated=RelatedForm(request.POST,instance=oldRelated) #grabs the error-bound form
             context={
                 'form':newRelated,
                 'errors':newRelated.errors,
+                'readArticle':showRelated,
             }
-            return render(request,'wikipediaApp/editRelated.html',context) #renders the form with errors    return render(request,'wikipediaApp/editRelated.html',{'ID':ID})
-    return render(request,'wikipediaApp/editRelated.html',{'form':newRelated})
+            return render(request,'wikipediaApp/editRelated2.html',context)#renders the form with errors    return render(request,'wikipediaApp/editRelated.html',{'ID':ID})
+    context={
+        'form':newRelated,
+        'readArticle':showRelated,
+    }
+    return render(request,'wikipediaApp/editRelated2.html',context)
 
 def deleteRelated(request,ID): #deletes related neeeds id of parent
     oldRelated=get_object_or_404(Related,pk=ID)
