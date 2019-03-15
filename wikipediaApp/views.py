@@ -72,6 +72,8 @@ def userArticles(request): #list all of the user
         'userArticles':user_article
     }
     return render (request,'wikipediaApp/userArticles2.html',context)
+
+@login_required
 def editArticle(request,ID): #edits page,needs id of instance
     oldArticle=get_object_or_404(Article,pk=ID) #grabs id of the article
     showArticle=Article.objects.filter(id=oldArticle.id)
@@ -97,6 +99,7 @@ def editArticle(request,ID): #edits page,needs id of instance
     }
     return render(request,'wikipediaApp/editArticle2.html',context) #renders on the editarticle page
 
+@login_required
 def deleteArticle(request,ID): #deletes needs id of instace
     oldArticle=get_object_or_404(Article,pk=ID)
     # newArticle=ArticleForm(instance=oldArticle)
@@ -113,6 +116,7 @@ def readRelated(request,ID): #reads related needs id of parent
 
     return render(request,'wikipediaApp/readRelated.html',{'ID':ID})
 
+@login_required
 def createRelated(request,ID): #creates related needs id of parent
     articleID=get_object_or_404(Article,pk=ID)
     form=RelatedForm(request.POST or None)
@@ -134,6 +138,7 @@ def createRelated(request,ID): #creates related needs id of parent
             return render(request,'wikipediaApp/createRelated.html',context) #renders content on template with errors
     return render(request,'wikipediaApp/createRelated.html',{'form':form})
 
+@login_required
 def editRelated(request,ID): #edits related needs id of parent
     oldRelated=get_object_or_404(Related,pk=ID) #grabs id of the article
     showRelated=Article.objects.filter(related=oldRelated)
@@ -160,7 +165,7 @@ def editRelated(request,ID): #edits related needs id of parent
         'readArticle':showRelated,
     }
     return render(request,'wikipediaApp/editRelated2.html',context)
-
+@login_required
 def deleteRelated(request,ID): #deletes related neeeds id of parent
     oldRelated=get_object_or_404(Related,pk=ID)
     if request.method=='POST':
