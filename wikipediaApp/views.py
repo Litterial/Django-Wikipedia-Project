@@ -3,11 +3,22 @@ from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm
 from django.utils import timezone
 from django.db.models import Q
+import os
+from django.conf import settings
 from django.contrib.auth.models import User
 # Create your views here.
 def index(request):  #landing page
     allArticles=Article.objects.all()
-    return render(request,'wikipediaApp/index.html',{'allArticles':allArticles})
+    article_total=len(allArticles)
+    allAuthors=Author.objects.all()
+
+    author_total=len(allAuthors)
+    context={
+        'allArticles':allArticles,
+        'articletotal':article_total,
+        'authortotal':author_total,
+    }
+    return render(request,'wikipediaApp/index.html',context)
 
 def createAuthor(request): #create an author
     form=AuthorForm(request.POST or None) #submits blank form for get request, filled form for post request
@@ -185,6 +196,26 @@ def search(request, ):
         'articleSearch':articleSearch,
     }
 
+    file_ = open(os.path.join(settings.BASE_DIR,  'common'))
+    a=file_.read().split()
+
+    # clear
+
+    for x in a:
+        print(x)
+        if x == search.lower():
+            return redirect('broadsearch')
+
+    if len(search)<3:
+        return redirect('broadsearch')
+
+
+    # print(stringtoArray)
+
     return render(request,'wikipediaApp/congrats.html',context)
 
+def broadsearch(request):
+    return render(request,'wikipediaApp/broadsearch.html')
 
+def results(request):
+    return HttpResponse("results")

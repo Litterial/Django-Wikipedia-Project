@@ -6,10 +6,24 @@
 <div class="title">
     <h1>Welcome to Memphis Wiki</h1>
     <div class="inner-margin">
-        A home of amazing content about the culture and history of Memphis, TN where anyone can edit. This site is a collaborative effort for all people wanting to learn more about Memphis. Memphis is one of the largest metro areas in the Southeast of the U.S and has a lot of rich history. We currently have 10 articles and 1 author and we need all the help we can get. To any and all editors,thank you for your time and all your contributions.
+        A home of amazing content about the culture and history of Memphis, TN where anyone can edit. This site is a collaborative effort for all people wanting to learn more about Memphis. Memphis is one of the largest metro areas in the Southeast of the U.S and has a lot of rich history. We currently have {% if articletotal == 1 %} {{articletotal}} article {% else %} {{articletotal}} articles {% endif %} and {% if authortotal == 1 %} {{authortotal}} author {% else %} {{authortotal}} authors {% endif %} and we need all the help we can get. To any and all editors,thank you for your time and all your contributions.
     </div>
 </div>
 <div class="article">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non accumsan diam, vitae dapibus lectus. Maecenas feugiat urna felis. Praesent purus ligula, scelerisque vitae suscipit feugiat, commodo sit amet mi. Vestibulum congue velit nulla, quis semper ligula venenatis vel. Vestibulum scelerisque est nisi, eget pretium neque laoreet quis. Donec elit purus, maximus et magna ut, rhoncus malesuada urna. Mauris lorem lacus, suscipit a elit non, viverra imperdiet massa. Vestibulum ullamcorper venenatis condimentum. Donec auctor urna sem, nec finibus ante rutrum quis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam et ipsum pellentesque, lobortis neque vitae, volutpat dolor. Donec quis magna nisl. Pellentesque fermentum rutrum massa a blandit.
+    <h2 class="allArticleheader">List of articles</h2>
+    <div class="articleGrid">
+        {% if allArticles %}
+        {% for x in allArticles %}
+        <ul>
+            {% if x.image %}
+            <li class="list-group list-group-flush"><img class="fixedimage" src="{{x.image.url}}"></li>
+            {% endif %}
+            <li class="list-group list-group-flush"><h3><a class="font-weight-bolder " href="{% url 'readArticle' x.id %}">{{x.title}}</a></h3></li>
+        </ul>
+        {% endfor %}
+        {% else %}
+        None
+        {% endif %}
+    </div>
 </div>
 {% endblock body %}

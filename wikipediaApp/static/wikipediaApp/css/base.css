@@ -13,7 +13,7 @@ margin: 2% 5%;
 }
 .search,.article,.title,.big
 {
-    background-color:lightgreen;
+    background-color: rgba(128, 128, 128, 0.2);
 }
 .search
 {
@@ -114,6 +114,21 @@ margin: 2% 5%;
     justify-content: flex-end;
     padding-top:4%;
 }
+
+.allArticleheader
+{
+    text-align: center;
+}
+.articleborder
+{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    margin:auto;
+    margin-bottom: 2%;
+    width:60%;
+    border:1px solid black;
+    border-radius: 1%;
+}
 /***********************************************Create/Edit Page*******************************************************/
 .titleBar
 {
@@ -143,6 +158,12 @@ textarea
     font-size: 5rem;
 }
 
+.fixedimage
+{
+    max-height: 200px;
+    max-width:200px;
+    margin: auto;
+}
 /***********************************************Read Page**************************************************************/
 
 .readGrid

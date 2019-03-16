@@ -23,6 +23,13 @@ urlpatterns=[
 
     path('search/',views.search,name='search'),
 
+    path('search/',views.search,name='search'),
+    path('broadsearch/',views.broadsearch,name='broadsearch'),
+    path('results/',views.results,name='results'),
+
+
+
+
 
 
 ]
