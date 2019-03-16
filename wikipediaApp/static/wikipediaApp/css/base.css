@@ -160,9 +160,9 @@ textarea
 
 .fixedimage
 {
-    max-height: 200px;
-    max-width:200px;
-    margin: auto;
+    height:300px;
+    width:400px;
+   margin: auto;
 }
 /***********************************************Read Page**************************************************************/
 
