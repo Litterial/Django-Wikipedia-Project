@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="POST">
-    {% csrf_token %}
-  {{form.as_p}}
-    <button>Submit</button>
-</form>
+{% extends 'wikipediaApp/base6.html' %}
 
-</body>
-</html>
+{% load static %}
+
+{% block body %}
+<div class="big blank">
+    <p>Your search for - {{search}}- found {% if totalarticles == 1 %} {{totalarticles}} result. {% else %} {{totalarticles}} results. {% endif %}
+
+    <nav>Results:
+        <br>
+        <br>
+    {% for x in articleSearch %}
+    <p><a href="{% url 'readArticle' x.id %}">{{x.title}}</a></p>{% endfor %}
+    </nav>
+
+    </p>
+</div>
+
+{% endblock body %}

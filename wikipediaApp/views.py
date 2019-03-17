@@ -43,7 +43,7 @@ def congrats(request): #confirmation page
 
 @login_required
 def createArticle(request): #creates new page, will create an id once created
-    form=ArticleForm(request.POST or None,)
+    form=ArticleForm(request.POST or None,request.FILES or None)
     key=Author.objects.get(username=request.user)
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
@@ -53,7 +53,7 @@ def createArticle(request): #creates new page, will create an id once created
             print(newForm.key_to_User)
             newForm.save()
             # Article.objects.create(,text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
-            return redirect('congrats') #redirects user to a confirmation page
+            return redirect('userArticles') #redirects user to a confirmation page
 
         else:
             form=ArticleForm(request.POST,request.FILES) #sends posted information back to form
@@ -114,12 +114,13 @@ def editArticle(request,ID): #edits page,needs id of instance
 def deleteArticle(request,ID): #deletes needs id of instace
     oldArticle=get_object_or_404(Article,pk=ID)
     # newArticle=ArticleForm(instance=oldArticle)
-
+    myuser=Author.objects.get(article=oldArticle.id)
     if request.method=='POST':
         oldArticle.delete()
         return redirect('userArticles')
     context={
         "oldArticle":oldArticle,
+        'myuser':myuser,
     }
     return render(request,'wikipediaApp/deleteArticle.html',context)
 
@@ -139,7 +140,8 @@ def createRelated(request,ID): #creates related needs id of parent
             newForm.key_to_Article = articleID
 
             newForm.save()
-            return redirect('congrats') #redirects user to a confirmation page
+
+            return redirect('readArticle',articleID.id) #redirects user to a confirmation page
         else:
             form=RelatedForm(request.POST) #sends posted information back to form
             context={
@@ -179,21 +181,29 @@ def editRelated(request,ID): #edits related needs id of parent
 @login_required
 def deleteRelated(request,ID): #deletes related neeeds id of parent
     oldRelated=get_object_or_404(Related,pk=ID)
+    parent_article=Article.objects.get(related=oldRelated)
     if request.method=='POST':
         oldRelated.delete()
-        return redirect('congrats')
+        return redirect('readArticle',parent_article.id)
     context={
-        'oldRelated':oldRelated
+        'oldRelated':oldRelated,
+        "parentArticle":parent_article,
     }
     return render(request,'wikipediaApp/deleteRelated.html',context)
 
-def search(request, ):
+def search(request):
 
     search=request.POST['find']
-    articleSearch=Article.objects.filter(Q(title__icontains=search))
+    articleSearch=Article.objects.filter(Q(title__icontains=search) or Q(text__icontains=search))
+    total_articles=len(articleSearch)
+
     context={
         'search':search,
         'articleSearch':articleSearch,
+        'totalarticles':total_articles,
+
+
+
     }
 
     file_ = open(os.path.join(settings.BASE_DIR,  'common'))
@@ -204,18 +214,16 @@ def search(request, ):
     for x in a:
         print(x)
         if x == search.lower():
-            return redirect('broadsearch')
+            return render(request,'wikipediaApp/broadsearch.html',context)
 
     if len(search)<3:
-        return redirect('broadsearch')
+        return render(request,'wikipediaApp/broadsearch.html',context)
+
+    if len(articleSearch)== 0:
+         return render(request,'wikipediaApp/broadsearch.html',context)
 
 
-    # print(stringtoArray)
+    return render(request,'wikipediaApp/search.html',context)
 
-    return render(request,'wikipediaApp/congrats.html',context)
 
-def broadsearch(request):
-    return render(request,'wikipediaApp/broadsearch.html')
 
-def results(request):
-    return HttpResponse("results")

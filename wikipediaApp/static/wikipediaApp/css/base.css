@@ -164,6 +164,12 @@ textarea
     width:400px;
    margin: auto;
 }
+
+.morefixedimage{
+    height:150px;
+    width:200px;
+    margin:auto;
+}
 /***********************************************Read Page**************************************************************/
 
 .readGrid
@@ -257,4 +263,9 @@ textarea
 .extrapadding
 {
     padding-bottom: 24%;
+}
+
+.blank{
+    background-color: white;
+    text-align: left;
 }
