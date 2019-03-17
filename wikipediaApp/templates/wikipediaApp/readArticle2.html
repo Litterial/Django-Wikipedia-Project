@@ -37,6 +37,10 @@
     </div>
 {% endif %}
 {{y.text}}<br>
+    <br>
+
+    Date created:{{y.date_created}} UTC<br>
+    Last updated:{{y.last_update}} UTC<br><br>
 <div class="relatedimg buttonmargin">
 <a class="editmargin" href="{% url 'editRelated' y.id %}"><button>Edit Related</button></a>
     <a href="{% url 'deleteRelated' y.id %}"><button>Delete Related</button></a>
@@ -86,6 +90,10 @@ none
                 </div>
                 {% endif %}
                 {{y.text}}<br>
+                <br>
+
+                Date created:{{y.date_created}} UTC<br>
+                Last updated:{{y.last_update}} UTC<br><br>
             </div>
             {% endfor %}
             {% else %}
