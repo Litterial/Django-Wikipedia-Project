@@ -269,3 +269,8 @@ textarea
     background-color: white;
     text-align: left;
 }
+
+.inline-form
+{
+    display:inline;
+}

@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {% load static %}
-    <title>Title</title>
-</head>
-<body>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>Submit</button>
-</form>
-</body>
-</html>
+{% extends 'wikipediaApp/base2.html' %}
+
+{% load static %}
+
+{% block body %}
+<div class="big">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="formCenter">
+            {{form.as_p}}
+
+            <button>Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock body %}

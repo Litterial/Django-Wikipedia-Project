@@ -52,7 +52,6 @@ def createArticle(request): #creates new page, will create an id once created
             newForm.key_to_User = key
             print(newForm.key_to_User)
             newForm.save()
-            # Article.objects.create(,text=request.POST['text'],image=request.FILES['image'],date_created=timezone.now(),last_update=timezone.now(),key_to_User=key)
             return redirect('userArticles') #redirects user to a confirmation page
 
         else:
@@ -182,14 +181,16 @@ def editRelated(request,ID): #edits related needs id of parent
 def deleteRelated(request,ID): #deletes related neeeds id of parent
     oldRelated=get_object_or_404(Related,pk=ID)
     parent_article=Article.objects.get(related=oldRelated)
+    readArticle=Article.objects.filter(related=oldRelated)
     if request.method=='POST':
         oldRelated.delete()
         return redirect('readArticle',parent_article.id)
     context={
         'oldRelated':oldRelated,
         "parentArticle":parent_article,
+        'readArticle':readArticle,
     }
-    return render(request,'wikipediaApp/deleteRelated.html',context)
+    return render(request,'wikipediaApp/deleteRelated2.html',context)
 
 def search(request):
 

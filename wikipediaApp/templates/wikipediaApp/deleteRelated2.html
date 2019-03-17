@@ -1,0 +1,21 @@
+{% extends 'wikipediaApp/base7.html' %}
+
+{% load static %}
+
+{% block body %}
+
+<div class="big blank">
+    {% if oldRelated %}
+    Are you sure you want to delete this Related Item: {{oldRelated}}?
+    <br>
+    <form class="inline-form" method="post">
+        {% csrf_token %}
+        <button>Yes</button>
+    </form>
+    <a href="{% url 'readArticle' parentArticle.id %}"><button>Cancel</button></a>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
