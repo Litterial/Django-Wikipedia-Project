@@ -1,3 +1,4 @@
+/***********************************************index*******************************************************************/
 .bodyContainter
 {
 height: 100vh;
@@ -7,7 +8,7 @@ margin: 2% 5%;
 .pageContainer
 {
     display: grid;
-    grid-template-rows: 10% 1fr 2fr;
+    grid-template-rows: 10% 0.5fr 2fr;
     grid-row-gap:4vh;
     row-gap:4vh;
 }
@@ -22,51 +23,26 @@ margin: 2% 5%;
     row-gap:20%;
 }
 
-.title
-{
-    grid-row:2;
-    grid-row-gap:20%;
-    row-gap:20%;
-    text-align: center;
-}
-
-.inner-margin
-{
-    margin:0 10%;
-}
-
-.article
-{
-    grid-row:3;
-    grid-row-gap:20%;
-    row-gap:20%;
-}
-
-
+/*divides .search into a grid system with 2 rows and 2 columns*/
 .nav-grid
 {
     position:relative;
     display:grid;
     grid-template-areas: ". logged"
     "nav-bar  search";
-    /*grid-template-columns: 1fr 1fr;*/
 
 }
+
+.nav-bar{
+     grid-area:nav-bar;
+ }
+
 
 .logged
 {
     grid-area: logged;
     text-align: right;
 
-}
-
-.logged-padding
-{
-    padding-left:2%;
-}
-
-.nav-bar{
-    grid-area:nav-bar;
 }
 
 .searchbar{
@@ -76,6 +52,7 @@ margin: 2% 5%;
 
 
 }
+
 .searchbar-inner
 {   position:absolute;
     right:0;
@@ -84,15 +61,66 @@ margin: 2% 5%;
     /*justify-content:flex-end ;*/
 
 }
+/*errros on logout page design. Position absolute wasn't displaying the search bar properly search bar to the bottom right*/
+.logoutflex
 
-.big
+ {  grid-area:search;
+     display: flex;
+     justify-content: flex-end;
+     padding-top:4%;
+ }
+
+
+/*spacing between characters when logged out*/
+.logged-padding
 {
-    position: relative;
-    grid-row:2/4
+    padding-left:2%;
+}
 
+/*title section on index*/
+.title
+{
+    grid-row:2;
+    grid-row-gap:20%;
+    row-gap:20%;
+    text-align: center;
+}
+
+/*aligns subtitle*/
+.inner-margin
+{
+    margin:0 10%;
+}
+/*adjust subtitle*/
+.subtitle-text
+{
+    font-size: 1.6rem;
+    padding-top: 1%;
+}
+.article
+{
+    grid-row:3;
+    grid-row-gap:20%;
+    row-gap:20%;
 }
 
 
+.allArticleheader
+{
+    text-align: center;
+}
+
+/*.articleborder*/
+/*{*/
+    /*display:grid;*/
+    /*grid-template-columns: 1fr 1fr;*/
+    /*margin:auto;*/
+    /*margin-bottom: 2%;*/
+    /*width:60%;*/
+    /*border:1px solid black;*/
+    /*border-radius: 1%;*/
+/*}*/
+/*list of articles is in a grid*/
 .articleGrid
 {
     display: grid;
@@ -102,33 +130,25 @@ margin: 2% 5%;
     row-gap:2vh;
 }
 
+/* used to combine the last two rows*/
+.big
+{
+    position: relative;
+    grid-row:2/4
+
+}
+
+
+/***************************************************User articles******************************************************/
+
 .mid{
     text-align: center;
     padding-bottom:2% ;
 }
 
-.logoutflex
 
-{  grid-area:search;
-    display: flex;
-    justify-content: flex-end;
-    padding-top:4%;
-}
 
-.allArticleheader
-{
-    text-align: center;
-}
-.articleborder
-{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    margin:auto;
-    margin-bottom: 2%;
-    width:60%;
-    border:1px solid black;
-    border-radius: 1%;
-}
+
 /***********************************************Create/Edit Page*******************************************************/
 .titleBar
 {
