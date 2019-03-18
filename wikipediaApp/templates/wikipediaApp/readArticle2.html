@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block body %}
+
 {% if user.is_authenticated %}
 <div class="big readGrid">
 {% if readArticle %}
@@ -38,19 +39,22 @@
 {% endif %}
 {{y.text}}<br>
     <br>
-
+    {% if trueAuthor == oldArticle.key_to_User %}
     Date created:{{y.date_created}} UTC<br>
     Last updated:{{y.last_update}} UTC<br><br>
 <div class="relatedimg buttonmargin">
 <a class="editmargin" href="{% url 'editRelated' y.id %}"><button>Edit Related</button></a>
     <a href="{% url 'deleteRelated' y.id %}"><button>Delete Related</button></a>
 </div>
+    {% endif %}
 </div>
 {% endfor %}
 {% else %}
 None
 {% endif %}
+{% if trueAuthor == oldArticle.key_to_User %}
 <a href="{% url 'createRelated' x.id %}">Create Related</a>
+ {% endif %}
 {% endfor %}
 {% else %}
 none
@@ -92,8 +96,6 @@ none
                 {{y.text}}<br>
                 <br>
 
-                Date created:{{y.date_created}} UTC<br>
-                Last updated:{{y.last_update}} UTC<br><br>
             </div>
             {% endfor %}
             {% else %}

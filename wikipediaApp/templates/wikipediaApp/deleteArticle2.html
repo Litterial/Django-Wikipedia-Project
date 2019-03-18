@@ -3,6 +3,14 @@
 {% load static %}
 
 {% block body %}
+
+{% if trueAuthor != oldArticle.key_to_User %}
+<div class="big blank">
+    <p>You are not authorized to access this page.
+    </p>
+</div>
+
+{% else %}
 <div class="big blank">
 {% if oldArticle %}
 Are you sure you want to delete this article: {{oldArticle}}? Deleting this article will also delete existing related items?
@@ -13,5 +21,6 @@ Are you sure you want to delete this article: {{oldArticle}}? Deleting this arti
 </form>
 <a href="{% url 'readArticle' oldArticle.id %}"><button>Cancel</button></a>
 {% endif %}
+    {% endif %}
 </div>
-{% endblock %}
+{% endblock body %}

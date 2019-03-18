@@ -25,8 +25,10 @@ def createAuthor(request): #create an author
     form=AuthorForm(request.POST or None) #submits blank form for get request, filled form for post request
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
-            User.objects.create_user(username=request.POST['username'],password=request.POST['password']) #create user
-            form.save()#saves info in models
+            newuser=User.objects.create_user(username=request.POST['username'],password=request.POST['password']) #create user
+            newForm=form.save(commit=False)
+            newForm.make_user=newuser
+            newForm.save()#saves info in models
             return redirect('index') #redirects user back to index
         else:
             form=AuthorForm(request.POST) #sends posted information back to form
@@ -48,7 +50,6 @@ def createArticle(request): #creates new page, will create an id once created
         if form.is_valid(): #if form is valid
             newForm = form.save(commit=False) #does not commit the save
             newForm.key_to_User = key  #assigns the foreign key of the created article to the current author
-            print(newForm.key_to_User)
             newForm.save() #saves the form
             return redirect('userArticles') #redirects user to userArticle  page
 
@@ -63,14 +64,33 @@ def createArticle(request): #creates new page, will create an id once created
     return render(request,'wikipediaApp/createArticle2.html',{'form':form})
 
 def readArticle(request,ID): #read individual articles
-    oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
-    readArticle=Article.objects.filter(id=ID)  #legacy code
-    readRelated=Related.objects.filter(key_to_Article=oldArticle) #gets all related items with a foreign key attached to the article
-    context={
-        'readArticle':readArticle,
-        'readRelated':readRelated,
-    }
-    return render(request,'wikipediaApp/readArticle2.html',context)
+    if request.user.is_authenticated:
+        oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
+        readArticle=Article.objects.filter(id=ID)  #legacy code
+        trueAuthor=Author.objects.get(username=request.user)
+        print(oldArticle.key_to_User)
+        print(trueAuthor.make_user)
+        readRelated=Related.objects.filter(key_to_Article=oldArticle) #gets all related items with a foreign key attached to the article
+        context={
+            'readArticle':readArticle,
+            'readRelated':readRelated,
+            'oldArticle':oldArticle,
+            'trueAuthor':trueAuthor,
+        }
+        return render(request,'wikipediaApp/readArticle2.html',context)
+    else:
+        oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
+        readArticle=Article.objects.filter(id=ID)  #legacy code
+        print(oldArticle.key_to_User)
+        readRelated=Related.objects.filter(key_to_Article=oldArticle) #gets all related items with a foreign key attached to the article
+        context={
+            'readArticle':readArticle,
+            'readRelated':readRelated,
+            'oldArticle':oldArticle,
+
+        }
+        return render(request,'wikipediaApp/readArticle2.html',context)
+
 @login_required
 def userArticles(request): #list all of  articles by the user
     key=Author.objects.get(username=request.user)
@@ -85,6 +105,7 @@ def userArticles(request): #list all of  articles by the user
 def editArticle(request,ID): #edits page,needs id of instance
     oldArticle=get_object_or_404(Article,pk=ID)  #grabs instance of the old article
     showArticle=Article.objects.filter(id=oldArticle.id)
+    trueAuthor=Author.objects.get(username=request.user)
     newArticle=ArticleForm(instance=oldArticle) #fills form with the instance
     if request.method=="POST": #if post methdod
         newArticle=ArticleForm(request.POST,request.FILES,instance=oldArticle) #gets the post informations and use instance to reference the id so a new article isn't created
@@ -104,13 +125,18 @@ def editArticle(request,ID): #edits page,needs id of instance
     context={
         'form':newArticle,
         'readArticle':showArticle,
+        'trueAuthor':trueAuthor,
+        'oldArticle':oldArticle,
     }
     return render(request,'wikipediaApp/editArticle2.html',context) #renders on the editarticle page
 
 @login_required
 def deleteArticle(request,ID): #deletes article
     oldArticle=get_object_or_404(Article,pk=ID) #gets instance of old article
-    # newArticle=ArticleForm(instance=oldArticle)
+    trueAuthor=Author.objects.get(username=request.user)
+    showArticle=Article.objects.filter(id=oldArticle.id)
+
+# newArticle=ArticleForm(instance=oldArticle)
     # myuser=Author.objects.get(article=oldArticle) #
     # print(myuser)
     if request.method=='POST': #if post request
@@ -118,13 +144,15 @@ def deleteArticle(request,ID): #deletes article
         return redirect('userArticles') #sends user back to userArticles page
     context={
         "oldArticle":oldArticle,
-        # 'myuser':myuser,
+        'trueAuthor':trueAuthor,
+        'readArticle':showArticle,
     }
     return render(request,'wikipediaApp/deleteArticle2.html',context) #renders content on template
 
 @login_required
 def createRelated(request,ID): #creates related
     article_instance=get_object_or_404(Article,pk=ID) #gets instance of parent article
+    trueAuthor=Author.objects.get(username=request.user)
     form=RelatedForm(request.POST or None, request.FILES or None) #get request
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
@@ -142,7 +170,12 @@ def createRelated(request,ID): #creates related
                 'errors':form.errors
             }
             return render(request,'wikipediaApp/createRelated.html',context) #renders content on template with errors
-    return render(request,'wikipediaApp/createRelated.html',{'form':form})
+    context={
+        'form':form,
+        'oldArticle':article_instance,
+        'trueAuthor':trueAuthor,
+    }
+    return render(request,'wikipediaApp/createRelated.html',context)
 
 @login_required
 def editRelated(request,ID): #edits related
@@ -150,6 +183,7 @@ def editRelated(request,ID): #edits related
     showRelated=Article.objects.filter(related=oldRelated) #legacy code
     test=Article.objects.get(related=oldRelated) #uses reverse foreign key to grab the parrent article
     newRelated=RelatedForm(instance=oldRelated)  #creates for with the instance of the old related item
+    trueAuthor=Author.objects.get(username=request.user)
     if request.method=="POST": #if post methdod
         newRelated=RelatedForm(request.POST,request.FILES,instance=oldRelated) #gets the post informations and use instance to reference the id so a new related isn't created
         if newRelated.is_valid(): #if the form is valid
@@ -175,6 +209,7 @@ def deleteRelated(request,ID): #deletes related
     oldRelated=get_object_or_404(Related,pk=ID) #grabs instance of old related
     parent_article=Article.objects.get(related=oldRelated) #reverse foreign key to get parent article
     readArticle=Article.objects.filter(related=oldRelated) #legacy code
+    trueAuthor=Author.objects.get(username=request.user)
     if request.method=='POST': #if post
         oldRelated.delete() #deletes
         return redirect('readArticle',parent_article.id) #redirects to parent article
