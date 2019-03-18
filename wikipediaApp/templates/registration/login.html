@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'wikipediaApp/base6(search).html' %}
+
+{% load static %}
+
+{% block body %}
+
+
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -13,23 +13,22 @@
 
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
-    <table>
+    <div>
 
-        <tr>
-            <td>{{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-        </tr>
+        <div>
+            <p>{{ form.username.label_tag }}</p>
+            <p>{{ form.username }}</p>
+        </div>
 
-        <tr>
-            <td>{{ form.password.label_tag }}</td>
-            <td>{{ form.password }}</td>
-        </tr>
-    </table>
+        <div>
+            <p>{{ form.password.label_tag }}</p>
+            <p>{{ form.password }}</p>
+        </div>
+    </div>
 
-    <input type="submit" value="login" />
+    <input type="submit" value="Login" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<a href="{% url 'index' %}">Go back home</a>
-</body>
-</html>
+
+{% endblock body %}

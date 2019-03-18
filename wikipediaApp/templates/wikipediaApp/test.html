@@ -1,4 +1,4 @@
-{% extends 'wikipediaApp/base2(createA).html' %}
+{% extends 'wikipediaApp/base6(search).html' %}
 
 {% load static %}
 
@@ -10,21 +10,13 @@
         <div class="formCenter">
 
         <div>
-            <h3>{{ form.title.label_tag }} </h3>
-            <p>{{ form.title }}</p>
+            <h3>{{ form.username.label_tag }} </h3>
+            <p>{{ form.username }}</p>
         </div>
         <div>
-            <h3>{{ form.text.label_tag }}</h3>
-            <p>{{ form.text }}</p>
+            <h3>{{ form.password.label_tag }}</h3>
+            <p>{{ form.password }}</p>
         </div>
-            <div>
-                <h3>{{ form.image.label_tag }}
-                {{ form.image }}</h3>
-            </div> <div>
-            <p>{{ form.last_update.label_tag }}</p>
-            <p>{{ form.last_update }}</p>
-        </div>
-
 
             <button><h3>Submit</h3></button>
         </div>

@@ -5,6 +5,9 @@ class AuthorForm(forms.ModelForm):
     class Meta:
         model=Author
         exclude=['make_user']
+        widgets={
+            'password':forms.PasswordInput(),
+        }
 class ArticleForm(forms.ModelForm):
     class Meta:
         model=Article
