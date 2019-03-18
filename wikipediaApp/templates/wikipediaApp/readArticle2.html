@@ -16,7 +16,7 @@
 </div>
 {% if x.image %}
     <div class= "img-grid">
-    <img class ='fixedimage' src="{{x.image.url}}">
+    <img class ='fixedimage morefixedimage' src="{{x.image.url}}">
     </div>
 {% endif %}
 <footer class="update">
@@ -33,7 +33,7 @@
 <div class="sidetext">
 <div class="relatedTitle">{{y.title}}</div>
 {% if y.image %}
-    <div class="relatedimg">
+    <div class="relatedimg morefixedimage">
 <img src="{{y.image.url}}">
     </div>
 {% endif %}
@@ -89,7 +89,7 @@ none
             <div class="sidetext">
                 <div class="relatedTitle">{{y.title}}</div>
                 {% if y.image %}
-                <div class="relatedimg">
+                <div class="relatedimg morefixedimage">
                     <img src="{{y.image.url}}">
                 </div>
                 {% endif %}

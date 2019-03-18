@@ -202,6 +202,7 @@ def editRelated(request,ID): #edits related
         'form':newRelated,
         'readArticle':showRelated,
         'trueAuthor':trueAuthor,
+        'oldArticle':test,
     }
     return render(request,'wikipediaApp/editRelated2.html',context)
 
@@ -219,6 +220,7 @@ def deleteRelated(request,ID): #deletes related
         "parentArticle":parent_article,
         'readArticle':readArticle,
         'trueAuthor':trueAuthor,
+        'oldArticle':parent_article,
     }
     return render(request,'wikipediaApp/deleteRelated2.html',context) #renders on template
 

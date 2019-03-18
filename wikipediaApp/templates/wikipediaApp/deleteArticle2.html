@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{% if trueAuthor != oldArticle.key_to_User %}
+{% if trueAuthor != oldArticle.key_to_User %}  {# authorization check #}
 <div class="big blank">
     <p>You are not authorized to access this page.
     </p>
