@@ -68,8 +68,6 @@ def readArticle(request,ID): #read individual articles
         oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
         readArticle=Article.objects.filter(id=ID)  #legacy code
         trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
-        print(oldArticle.key_to_User)
-        print(trueAuthor.make_user)
         readRelated=Related.objects.filter(key_to_Article=oldArticle) #gets all related items with a foreign key attached to the article
         context={
             'readArticle':readArticle,
@@ -81,7 +79,6 @@ def readArticle(request,ID): #read individual articles
     else:
         oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
         readArticle=Article.objects.filter(id=ID)  #legacy code
-        print(oldArticle.key_to_User)
         readRelated=Related.objects.filter(key_to_Article=oldArticle) #gets all related items with a foreign key attached to the article
         context={
             'readArticle':readArticle,
@@ -94,7 +91,6 @@ def readArticle(request,ID): #read individual articles
 @login_required
 def userArticles(request): #list all of  articles by the user
     key=Author.objects.get(username=request.user)
-    print(key)
     user_article=Article.objects.filter(key_to_User=key)
     context={
         'userArticles':user_article
@@ -159,8 +155,9 @@ def createRelated(request,ID): #creates related
             print(form)
             newForm = form.save(commit=False) #cancels save
             newForm.key_to_Article = article_instance #attaches foregin key to
-
-            newForm.save()
+            article_instance.last_update=timezone.now() #change update time on article page
+            article_instance.save() #saves time on article
+            newForm.save() #saves form
 
             return redirect('readArticle',article_instance.id) #redirects user to parent article
         else:
@@ -188,6 +185,8 @@ def editRelated(request,ID): #edits related
         newRelated=RelatedForm(request.POST,request.FILES,instance=oldRelated) #gets the post informations and use instance to reference the id so a new related isn't created
         if newRelated.is_valid(): #if the form is valid
             oldRelated.last_update=timezone.now()   #changes the time to the current time
+            test.last_update=timezone.now() #change time on article
+            test.save() # saves time
             newRelated.save() #saves the current time
             return redirect('readArticle',test.id)  #redirects to congrats
         else:
@@ -214,6 +213,8 @@ def deleteRelated(request,ID): #deletes related
     trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     if request.method=='POST': #if post
         oldRelated.delete() #deletes
+        parent_article.last_update=timezone.now() #changes time on article
+        parent_article.save() #saves time
         return redirect('readArticle',parent_article.id) #redirects to parent article
     context={
         'oldRelated':oldRelated,
