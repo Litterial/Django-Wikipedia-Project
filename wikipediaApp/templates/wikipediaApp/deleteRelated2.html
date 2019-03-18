@@ -4,12 +4,7 @@
 
 {% block body %}
 
-{% if trueAuthor != oldArticle.key_to_User %}  {# authorization check #}
-<div class="big blank">
-    <p>You are not authorized to access this page.
-    </p>
-</div>
-{% else %}
+
 <div class="big blank">
     {% if oldRelated %}
     Are you sure you want to delete this Related Item: {{oldRelated}}?
@@ -20,7 +15,7 @@
     </form>
     <a href="{% url 'readArticle' parentArticle.id %}"><button>Cancel</button></a>
     {% endif %}
-    {% endif %}
+
 </div>
 
 
