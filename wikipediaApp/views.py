@@ -67,7 +67,7 @@ def readArticle(request,ID): #read individual articles
     if request.user.is_authenticated:
         oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
         readArticle=Article.objects.filter(id=ID)  #legacy code
-        trueAuthor=Author.objects.get(username=request.user)
+        trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
         print(oldArticle.key_to_User)
         print(trueAuthor.make_user)
         readRelated=Related.objects.filter(key_to_Article=oldArticle) #gets all related items with a foreign key attached to the article
@@ -105,7 +105,7 @@ def userArticles(request): #list all of  articles by the user
 def editArticle(request,ID): #edits page,needs id of instance
     oldArticle=get_object_or_404(Article,pk=ID)  #grabs instance of the old article
     showArticle=Article.objects.filter(id=oldArticle.id)
-    trueAuthor=Author.objects.get(username=request.user)
+    trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     newArticle=ArticleForm(instance=oldArticle) #fills form with the instance
     if request.method=="POST": #if post methdod
         newArticle=ArticleForm(request.POST,request.FILES,instance=oldArticle) #gets the post informations and use instance to reference the id so a new article isn't created
@@ -133,7 +133,7 @@ def editArticle(request,ID): #edits page,needs id of instance
 @login_required
 def deleteArticle(request,ID): #deletes article
     oldArticle=get_object_or_404(Article,pk=ID) #gets instance of old article
-    trueAuthor=Author.objects.get(username=request.user)
+    trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     showArticle=Article.objects.filter(id=oldArticle.id)
 
 # newArticle=ArticleForm(instance=oldArticle)
@@ -152,7 +152,7 @@ def deleteArticle(request,ID): #deletes article
 @login_required
 def createRelated(request,ID): #creates related
     article_instance=get_object_or_404(Article,pk=ID) #gets instance of parent article
-    trueAuthor=Author.objects.get(username=request.user)
+    trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     form=RelatedForm(request.POST or None, request.FILES or None) #get request
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
@@ -183,7 +183,7 @@ def editRelated(request,ID): #edits related
     showRelated=Article.objects.filter(related=oldRelated) #legacy code
     test=Article.objects.get(related=oldRelated) #uses reverse foreign key to grab the parrent article
     newRelated=RelatedForm(instance=oldRelated)  #creates for with the instance of the old related item
-    trueAuthor=Author.objects.get(username=request.user)
+    trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     if request.method=="POST": #if post methdod
         newRelated=RelatedForm(request.POST,request.FILES,instance=oldRelated) #gets the post informations and use instance to reference the id so a new related isn't created
         if newRelated.is_valid(): #if the form is valid
@@ -201,6 +201,7 @@ def editRelated(request,ID): #edits related
     context={
         'form':newRelated,
         'readArticle':showRelated,
+        'trueAuthor':trueAuthor,
     }
     return render(request,'wikipediaApp/editRelated2.html',context)
 
@@ -209,7 +210,7 @@ def deleteRelated(request,ID): #deletes related
     oldRelated=get_object_or_404(Related,pk=ID) #grabs instance of old related
     parent_article=Article.objects.get(related=oldRelated) #reverse foreign key to get parent article
     readArticle=Article.objects.filter(related=oldRelated) #legacy code
-    trueAuthor=Author.objects.get(username=request.user)
+    trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     if request.method=='POST': #if post
         oldRelated.delete() #deletes
         return redirect('readArticle',parent_article.id) #redirects to parent article
@@ -217,6 +218,7 @@ def deleteRelated(request,ID): #deletes related
         'oldRelated':oldRelated,
         "parentArticle":parent_article,
         'readArticle':readArticle,
+        'trueAuthor':trueAuthor,
     }
     return render(request,'wikipediaApp/deleteRelated2.html',context) #renders on template
 
