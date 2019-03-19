@@ -26,9 +26,9 @@ def createAuthor(request): #create an author
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
             newuser=User.objects.create_user(username=request.POST['username'],password=request.POST['password']) #create user
-            newForm=form.save(commit=False)
-            newForm.make_user=newuser
-            newForm.save()#saves info in models
+            newform=form.save(commit=False)
+            newform.key_to_User=newuser #gives article model foreign key to user
+            newform.save()
             return redirect('index') #redirects user back to index
         else:
             form=AuthorForm(request.POST) #sends posted information back to form
@@ -106,6 +106,7 @@ def editArticle(request,ID): #edits page,needs id of instance
     if request.method=="POST": #if post methdod
         newArticle=ArticleForm(request.POST,request.FILES,instance=oldArticle) #gets the post informations and use instance to reference the id so a new article isn't created
         if newArticle.is_valid(): #if the article is valid
+            oldArticle.key_to_User=trueAuthor
             oldArticle.last_update=timezone.now()   #changes the time to the current time
             newArticle.save() #saves the current time
             return redirect('readArticle',oldArticle.id)  #redirects to the updated article
@@ -149,12 +150,14 @@ def deleteArticle(request,ID): #deletes article
 def createRelated(request,ID): #creates related
     article_instance=get_object_or_404(Article,pk=ID) #gets instance of parent article
     trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
+    parent_article=Article.objects.get(id=article_instance.id)
     form=RelatedForm(request.POST or None, request.FILES or None) #get request
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
             print(form)
             newForm = form.save(commit=False) #cancels save
-            newForm.key_to_Article = article_instance #attaches foregin key to
+            newForm.key_to_Article= article_instance #attaches foregin key to
+            print( newForm.key_to_Article)
             article_instance.last_update=timezone.now() #change update time on article page
             article_instance.save() #saves time on article
             newForm.save() #saves form
@@ -184,10 +187,12 @@ def editRelated(request,ID): #edits related
     if request.method=="POST": #if post methdod
         newRelated=RelatedForm(request.POST,request.FILES,instance=oldRelated) #gets the post informations and use instance to reference the id so a new related isn't created
         if newRelated.is_valid(): #if the form is valid
-            oldRelated.last_update=timezone.now()   #changes the time to the current time
+            newerRelated=newRelated.save(commit=False)
+            oldRelated.last_update=timezone.now()  #changes the time to the current time
+            newerRelated.key_to_Article=test
             test.last_update=timezone.now() #change time on article
             test.save() # saves time
-            newRelated.save() #saves the current time
+            newerRelated.save() #saves the current time
             return redirect('readArticle',test.id)  #redirects to congrats
         else:
             newRelated=RelatedForm(request.POST,instance=oldRelated) #grabs the error-bound form
@@ -250,8 +255,6 @@ def search(request):
         if x == search.lower():  #if the keyword matches on of the words on the common words list renders to broad search page
             return render(request,'wikipediaApp/broadsearch.html',context)
 
-    if len(search)<3: # if the word is less than 3 characters, renders to a broad search page
-        return render(request,'wikipediaApp/broadsearch.html',context)
 
     if len(articleSearch)== 0: # if there is element in the array, renders to a broad search page
          return render(request,'wikipediaApp/broadsearch.html',context)

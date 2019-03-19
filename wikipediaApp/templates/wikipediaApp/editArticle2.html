@@ -4,7 +4,13 @@
 
 {% block body %}
 
+{% if trueAuthor != oldArticle.key_to_User %}  {# authorization check #}
+<div class="big blank">
+    <p>You are not authorized to access this page.
+    </p>
+</div>
 
+{% else %}
 
 <div class="big">
     <form method="POST" enctype="multipart/form-data">
@@ -32,5 +38,5 @@
         </div>
     </form>
 </div>
-
+{% endif %}
 {% endblock body %}
