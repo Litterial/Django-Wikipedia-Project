@@ -27,7 +27,7 @@ def createAuthor(request): #create an author
         if form.is_valid(): #if form is valid
             newuser=User.objects.create_user(username=request.POST['username'],password=request.POST['password']) #create user
             newform=form.save(commit=False)
-            newform.key_to_User=newuser #gives article model foreign key to user
+            newform.make_user=newuser #gives article model foreign key to user
             newform.save()
             return redirect('index') #redirects user back to index
         else:
