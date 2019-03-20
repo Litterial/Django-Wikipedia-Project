@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def index(request):  #landing page
+    if request.user.is_superuser:
+        logout(request)
     allArticles=Article.objects.all() #ets all articles
     article_total=len(allArticles) #gets total number of articles
     allAuthors=Author.objects.all() #gets all authors
@@ -23,6 +25,8 @@ def index(request):  #landing page
     return render(request,'wikipediaApp/index.html',context)
 
 def createAuthor(request): #create an author
+    if request.user.is_superuser:
+        logout(request)
     if request.user.is_authenticated:
         logout(request) #logs out user if they are logged in
     form=AuthorForm(request.POST or None) #submits blank form for get request, filled form for post request
@@ -50,6 +54,8 @@ def createAuthor(request): #create an author
 
 @login_required
 def createArticle(request): #creates new page, will create an id once created
+    if request.user.is_superuser:
+        logout(request)
     form=ArticleForm(request.POST or None,request.FILES or None)  #get request to create an article
     key=Author.objects.get(username=request.user)   #grabs the author that is logged in
     if request.method =='POST': #if post request
@@ -70,6 +76,8 @@ def createArticle(request): #creates new page, will create an id once created
     return render(request,'wikipediaApp/createArticle2.html',{'form':form})
 
 def readArticle(request,ID): #read individual articles
+    if request.user.is_superuser:
+        logout(request)
     if request.user.is_authenticated:
         oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
         readArticle=Article.objects.filter(id=ID)  #legacy code
@@ -96,6 +104,8 @@ def readArticle(request,ID): #read individual articles
 
 @login_required
 def userArticles(request): #list all of  articles by the user
+    if request.user.is_superuser:
+        logout(request)
     key=Author.objects.get(username=request.user)
     user_article=Article.objects.filter(key_to_User=key)
     context={
@@ -105,6 +115,8 @@ def userArticles(request): #list all of  articles by the user
 
 @login_required
 def editArticle(request,ID): #edits page,needs id of instance
+    if request.user.is_superuser:
+        logout(request)
     oldArticle=get_object_or_404(Article,pk=ID)  #grabs instance of the old article
     showArticle=Article.objects.filter(id=oldArticle.id)
     trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
@@ -135,6 +147,8 @@ def editArticle(request,ID): #edits page,needs id of instance
 
 @login_required
 def deleteArticle(request,ID): #deletes article
+    if request.user.is_superuser:
+        logout(request)
     oldArticle=get_object_or_404(Article,pk=ID) #gets instance of old article
     trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     showArticle=Article.objects.filter(id=oldArticle.id)
@@ -154,6 +168,8 @@ def deleteArticle(request,ID): #deletes article
 
 @login_required
 def createRelated(request,ID): #creates related
+    if request.user.is_superuser:
+        logout(request)
     article_instance=get_object_or_404(Article,pk=ID) #gets instance of parent article
     trueAuthor=Author.objects.get(username=request.user) #i'm using to prevent users from accessing other user's information
     parent_article=Article.objects.get(id=article_instance.id)
@@ -185,6 +201,8 @@ def createRelated(request,ID): #creates related
 
 @login_required
 def editRelated(request,ID): #edits related
+    if request.user.is_superuser:
+        logout(request)
     oldRelated=get_object_or_404(Related,pk=ID) #grabs instance of related
     showRelated=Article.objects.filter(related=oldRelated) #legacy code
     test=Article.objects.get(related=oldRelated) #uses reverse foreign key to grab the parrent article
@@ -218,6 +236,8 @@ def editRelated(request,ID): #edits related
 
 @login_required
 def deleteRelated(request,ID): #deletes related
+    if request.user.is_superuser:
+        logout(request)
     oldRelated=get_object_or_404(Related,pk=ID) #grabs instance of old related
     parent_article=Article.objects.get(related=oldRelated) #reverse foreign key to get parent article
     readArticle=Article.objects.filter(related=oldRelated) #legacy code
@@ -237,6 +257,8 @@ def deleteRelated(request,ID): #deletes related
     return render(request,'wikipediaApp/deleteRelated2.html',context) #renders on template
 
 def search(request):
+    if request.user.is_superuser:
+        logout(request)
     search=request.POST['find'] #grabs keyword user searched for
     newsearch='' + search + " "  #added space after each word to represent a single word
     articleSearch=Article.objects.filter(Q(title__icontains=newsearch) or Q(text__icontains=newsearch)) #filters keyword
