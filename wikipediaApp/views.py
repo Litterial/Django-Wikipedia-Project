@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm
 from django.utils import timezone
@@ -23,6 +23,8 @@ def index(request):  #landing page
     return render(request,'wikipediaApp/index.html',context)
 
 def createAuthor(request): #create an author
+    if request.user.is_authenticated:
+        logout(request) #logs out user if they are logged in
     form=AuthorForm(request.POST or None) #submits blank form for get request, filled form for post request
     if request.method =='POST': #if post request
         if form.is_valid(): #if form is valid
