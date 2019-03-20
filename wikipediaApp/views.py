@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login
 from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from .forms import Author,AuthorForm,Article,ArticleForm,Related,RelatedForm
 from django.utils import timezone
@@ -28,7 +29,10 @@ def createAuthor(request): #create an author
             newuser=User.objects.create_user(username=request.POST['username'],password=request.POST['password']) #create user
             newform=form.save(commit=False)
             newform.make_user=newuser #gives article model foreign key to user
-            newform.save()
+            login_created_author=newform.save()
+            login_created_author=authenticate(username=form.cleaned_data['username'],password=form.cleaned_data['password']) #checks to see if this is a valid user, if so return a user object
+            login(request,login_created_author) #request that this user is logged in
+
             return redirect('index') #redirects user back to index
         else:
             form=AuthorForm(request.POST) #sends posted information back to form

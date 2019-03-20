@@ -8,6 +8,10 @@ class AuthorForm(forms.ModelForm):
         widgets={
             'password':forms.PasswordInput(),
         }
+        
+        
+        
+        
 class ArticleForm(forms.ModelForm):
     class Meta:
         model=Article
