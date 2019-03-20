@@ -68,7 +68,7 @@
                 </ul>
             </div>
             <div class="searchbar">
-                <form class="logoutflex" action= "{% url 'search'  %}" method="POST">
+                <form action= "{% url 'search'  %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name=find placeholder="Search">
                 </form>

@@ -81,7 +81,7 @@
                         </li>
                     </ul>
                 </div>
-                <form class='searchbar-inner' action= "{% url 'search'  %}" method="POST">
+                <form action= "{% url 'search'  %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name=find placeholder="Search">
                 </form>

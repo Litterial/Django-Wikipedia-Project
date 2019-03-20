@@ -49,7 +49,7 @@
             </div>
             <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
             <div class="searchbar">
-                <form class="logoutflex" action= "{% url 'search'  %}" method="POST">
+                <form action= "{% url 'search'  %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name=find placeholder="Search">
                 </form>

@@ -8,7 +8,7 @@ margin: 2% 5%;
 .pageContainer
 {
     display: grid;
-    grid-template-rows: 10% 0.5fr 2fr;
+    grid-template-rows: 20% 0.5fr 2fr;
     grid-row-gap:4vh;
     row-gap:4vh;
 }
@@ -18,9 +18,11 @@ margin: 2% 5%;
 }
 .search
 {
+    position:relative;
     grid-row:1;
     grid-row-gap:20%;
     row-gap:20%;
+    height:100%;
 }
 
 /*divides .search into a grid system with 2 rows and 2 columns*/
@@ -28,47 +30,41 @@ margin: 2% 5%;
 {
     position:relative;
     display:grid;
-    grid-template-areas: ". logged"
+    grid-template-areas: "blank logged"
     "nav-bar  search";
 
 }
-
+.period
+{
+    grid-area:blank;
+}
 .nav-bar{
-     grid-area:nav-bar;
+
+    grid-area:nav-bar;
  }
 
 
 .logged
 {
+
+    display: flex;
+    justify-content: flex-end;
+    align-content: flex-end;
     grid-area: logged;
-    text-align: right;
 
 }
 
 .searchbar{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
     grid-area:search;
-    /*display:flex;*/
-    /*justify-content: flex-end;*/
-
 
 }
 
-.searchbar-inner
-{   position:absolute;
-    right:0;
-    bottom:0;
-    /*display: flex;*/
-    /*justify-content:flex-end ;*/
 
-}
 /*errros on logout page design. Position absolute wasn't displaying the search bar properly search bar to the bottom right*/
-.logoutflex
 
- {  grid-area:search;
-     display: flex;
-     justify-content: flex-end;
-     padding-top:4%;
- }
 
 
 /*spacing between characters when logged out*/

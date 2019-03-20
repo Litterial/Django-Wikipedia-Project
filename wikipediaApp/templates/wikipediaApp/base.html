@@ -11,9 +11,10 @@
 </head>
 <body class="bodyContainter">
 <div class="pageContainer">
-    {% if user.is_authenticated %}
+    {% if request.user.is_authenticated %}
     <div class="search">
         <div class="nav-grid">
+            <div class="period"></div>
             <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
             <div class="nav-bar card-header">
                 <ul class="nav nav-tabs card-header-tabs">
@@ -29,7 +30,7 @@
                 </ul>
             </div>
             <div  class="searchbar">
-                <form class='searchbar-inner' action= "{% url 'search'  %}" method="POST">
+                <form action= "{% url 'search'  %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name=find placeholder="Search">
                 </form>
@@ -44,12 +45,12 @@
             <div class="nav-bar card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                        <a class='nav-link active extrapadding' href="{% url 'index' %}">Home</a>
+                        <a class='nav-link active' href="{% url 'index' %}">Home</a>
                     </li>
                 </ul>
             </div>
         <div class="searchbar">
-            <form class="logoutflex" action= "{% url 'search'  %}" method="POST">
+            <form class="logged" action= "{% url 'search'  %}" method="POST">
                 {% csrf_token %}
                 <input type="text" name=find placeholder="Search">
             </form>
