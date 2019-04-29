@@ -50,7 +50,7 @@
                 </ul>
             </div>
         <div class="searchbar">
-            <form class="logged" action= "{% url 'search'  %}" method="POST">
+            <form class="searchbar-bottom" action= "{% url 'search'  %}" method="POST">
                 {% csrf_token %}
                 <input type="text" name=find placeholder="Search">
             </form>
