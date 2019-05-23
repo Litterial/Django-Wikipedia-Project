@@ -103,3 +103,4 @@ venv.bak/
 .mypy_cache/
 .idea/
 project2-django-Litterial.iml
+db.sqlite3

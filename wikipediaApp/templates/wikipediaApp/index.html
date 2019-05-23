@@ -15,10 +15,11 @@
         {% if allArticles %}
         {% for x in allArticles %}
         <ul>
+
+            <li class="list-group list-group-flush"><h3><a class="font-weight-bolder " href="{% url 'readArticle' x.id %}">{{x.title}}</a></h3></li>
             {% if x.image %}
             <li class="list-group list-group-flush"><img class="fixedimage" src="{{x.image.url}}"></li>
             {% endif %}
-            <li class="list-group list-group-flush"><h3><a class="font-weight-bolder " href="{% url 'readArticle' x.id %}">{{x.title}}</a></h3></li>
         </ul>
         {% endfor %}
         {% else %}
