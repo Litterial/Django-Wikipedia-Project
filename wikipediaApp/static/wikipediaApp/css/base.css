@@ -41,6 +41,9 @@ margin: 2% 5%;
 .nav-bar{
 
     grid-area:nav-bar;
+    display:flex;
+    align-items:flex-end;
+    justify-content: flex-start;
  }
 
 
