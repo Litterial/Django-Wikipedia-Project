@@ -32,6 +32,7 @@ margin: 2% 5%;
     display:grid;
     grid-template-areas: "blank logged"
     "nav-bar  search";
+    height:100%;
 
 }
 .period
