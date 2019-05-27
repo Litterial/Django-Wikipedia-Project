@@ -8,7 +8,7 @@ margin: 2% 5%;
 .pageContainer
 {
     display: grid;
-    grid-template-rows: 20% 0.5fr 2fr;
+    grid-template-rows: 0.5fr 0.5fr 2fr;
     grid-row-gap:4vh;
     row-gap:4vh;
 }
