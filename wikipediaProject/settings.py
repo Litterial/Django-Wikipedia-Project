@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +24,7 @@ SECRET_KEY = '8h(s*m@4z$*h^k(gcy6ve3qc@wv=0l=u&a@_yv**&fhf3!1^sd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','juwanmoore.com']
+ALLOWED_HOSTS = ['juwanmoore.com','127.0.0.1','app1.juwanmoore.com','45.55.38.143']
 
 
 # Application definition
@@ -119,11 +118,9 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT= os.path.join(BASE_DIR,'static')
+STATIC_ROOT= os.path.join(BASE_DIR,'static/')
 MEDIA_ROOT= os.path.join(BASE_DIR,'media/')
 MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='/'
-
-
