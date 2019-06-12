@@ -8,10 +8,17 @@ class AuthorForm(forms.ModelForm):
         widgets={
             'password':forms.PasswordInput(),
         }
-        
-        
-        
-        
+
+    def clean_username(self):
+        userData=self.cleaned_data['username']
+        print(userData)
+        if Author.objects.filter(username=userData).exists():
+            print("error")
+            raise forms.ValidationError("This user already exist")
+        return userData
+
+
+
 class ArticleForm(forms.ModelForm):
     class Meta:
         model=Article

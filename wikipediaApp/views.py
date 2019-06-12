@@ -38,7 +38,6 @@ def createAuthor(request): #create an author
             login_created_author=newform.save()
             login_created_author=authenticate(username=form.cleaned_data['username'],password=form.cleaned_data['password']) #checks to see if this is a valid user, if so return a user object
             login(request,login_created_author) #request that this user is logged in
-
             return redirect('index') #redirects user back to index
         else:
             form=AuthorForm(request.POST) #sends posted information back to form
