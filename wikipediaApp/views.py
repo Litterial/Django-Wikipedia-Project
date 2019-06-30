@@ -258,9 +258,8 @@ def deleteRelated(request,ID): #deletes related
 def search(request):
     if request.user.is_superuser:
         logout(request)
-    search=request.POST['find'] #grabs keyword user searched for
-    newsearch='' + search + " "  #added space after each word to represent a single word
-    articleSearch=Article.objects.filter(Q(title__icontains=newsearch) or Q(text__icontains=newsearch)) #filters keyword
+    search=request.GET['find'] #grabs keyword user searched for
+    articleSearch=Article.objects.filter(Q(title__icontains=search) | Q(text__icontains=search)) #filters keyword
     total_articles=len(articleSearch) #graps length of the array of article search
 
     context={
@@ -278,7 +277,7 @@ def search(request):
     # clear
 
     for x in a:
-        print(x)
+        # print(x)
         if x == search.lower():  #if the keyword matches on of the words on the common words list renders to broad search page
             return render(request,'wikipediaApp/broadsearch.html',context)
 

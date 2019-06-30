@@ -30,8 +30,7 @@
                 </ul>
             </div>
             <div  class="searchbar">
-                <form action= "{% url 'search'  %}" method="POST">
-                    {% csrf_token %}
+                <form action= "{% url 'search'  %}" method="GET">
                     <input type="text" name=find placeholder="Search">
                 </form>
             </div>
@@ -50,8 +49,7 @@
                 </ul>
             </div>
         <div class="searchbar">
-            <form class="searchbar-bottom" action= "{% url 'search'  %}" method="POST">
-                {% csrf_token %}
+            <form class="searchbar-bottom" action= "{% url 'search'  %}" method="GET">
                 <input type="text" name=find placeholder="Search">
             </form>
         </div>

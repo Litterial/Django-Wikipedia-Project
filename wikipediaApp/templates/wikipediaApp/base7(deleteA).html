@@ -44,8 +44,7 @@
                         </li>
                     </ul>
                 </div>
-                <form action= "{% url 'search'  %}" method="POST">
-                    {% csrf_token %}
+                <form action= "{% url 'search'  %}" method="GET">
                     <input type="text" name=find placeholder="Search">
                 </form>
             </div>
@@ -68,8 +67,7 @@
                 </ul>
             </div>
             <div class="searchbar">
-                <form class="logoutflex" action= "{% url 'search'  %}" method="POST">
-                    {% csrf_token %}
+                <form class="logoutflex" action= "{% url 'search'  %}" method="GET">
                     <input type="text" name=find placeholder="Search">
                 </form>
             </div>

@@ -29,8 +29,7 @@
                 </ul>
             </div>
             <div  class="searchbar">
-                <form class='searchbar-inner' action= "{% url 'search'  %}" method="POST">
-                    {% csrf_token %}
+                <form class='searchbar-inner' action= "{% url 'search'  %}" method="GET">
                     <input type="text" name=find placeholder="Search">
                 </form>
             </div>
@@ -49,8 +48,7 @@
             </div>
             <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
             <div class="searchbar">
-                <form action= "{% url 'search'  %}" method="POST">
-                    {% csrf_token %}
+                <form action= "{% url 'search'  %}" method="GET">
                     <input type="text" name=find placeholder="Search">
                 </form>
             </div>
