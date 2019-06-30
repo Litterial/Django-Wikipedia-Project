@@ -10,28 +10,27 @@
     <title>Title</title>
 </head>
 <body class="bodyContainter">
-<div class="pageContainer">
-    {% if trueAuthor == oldArticle.key_to_User %}
-    {% if readArticle %}
-    {% for x in readArticle %}
-    <div class="search">
-        <div class="nav-grid">
-            <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
-            <div class="nav-bar card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'index' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
-                    </li>
-                </ul>
-            </div>
-            <div  class="searchbar">
-                <div class=" readNav card-header">
+{% if trueAuthor == oldArticle.key_to_User %}
+{% if readArticle %}
+{% for x in readArticle %}
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <div class=" readNav card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
                         <a class='nav-link active ' href="{% url 'readArticle' x.id%}">Read</a>
@@ -44,77 +43,79 @@
                     </li>
                 </ul>
             </div>
-                <form class='searchbar-inner' action= "{% url 'search'  %}" method="GET">
-                    <input type="text" name=find placeholder="Search">
-                </form>
-            </div>
+            <form class='searchbar-inner' action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
         </div>
     </div>
-    {% endfor %}
-    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
 
-    {% elif user.is_authenticated %}
-    {% if readArticle %}
-    {% for x in readArticle %}
-    <div class="search">
-        <div class="nav-grid">
-            <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
-            <div class="nav-bar card-header">
+{% elif user.is_authenticated %}
+{% if readArticle %}
+{% for x in readArticle %}
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <div class=" readNav card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                        <a class='nav-link' href="{% url 'index' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                        <a class='nav-link active ' href="{% url 'readArticle' x.id%}">Read</a>
                     </li>
                 </ul>
             </div>
-            <div  class="searchbar">
-                <div class=" readNav card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class='nav-link active ' href="{% url 'readArticle' x.id%}">Read</a>
-                        </li>
-                    </ul>
-                </div>
-                <form action= "{% url 'search'  %}" method="GET">
-                    <input type="text" name=find placeholder="Search">
-                </form>
-            </div>
+            <form action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
         </div>
     </div>
-    {% endfor %}
-    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
 
-    {% else %}
-    {% if readArticle %}
-    {% for x in readArticle %}
-    <div class="search">
-        <div class='nav-grid'>
-            <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
-            <div class="nav-bar card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'index' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link active extrapadding' href="{% url 'readArticle' x.id %}">Read</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="searchbar">
-                <form class="logoutflex" action= "{% url 'search'  %}" method="GET">
-                    <input type="text" name=find placeholder="Search">
-                </form>
-            </div>
+{% else %}
+{% if readArticle %}
+{% for x in readArticle %}
+<div class="search">
+    <div class='nav-grid'>
+        <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link active extrapadding' href="{% url 'readArticle' x.id %}">Read</a>
+                </li>
+            </ul>
+        </div>
+        <div class="searchbar">
+            <form class="logoutflex" action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
         </div>
     </div>
-    {% endfor %}
-    {% endif %}
-    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endif %}
+
+<div class="pageContainer">
 
     {% block body %}
     <div class="title">

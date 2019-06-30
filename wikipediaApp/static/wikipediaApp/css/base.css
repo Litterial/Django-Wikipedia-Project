@@ -8,7 +8,7 @@ margin: 2% 5%;
 .pageContainer
 {
     display: grid;
-    grid-template-rows: 0.5fr 0.5fr 2fr;
+    grid-template-rows:  1fr 2fr;
     grid-row-gap:4vh;
     row-gap:4vh;
 }
@@ -19,10 +19,10 @@ margin: 2% 5%;
 .search
 {
     position:relative;
-    grid-row:1;
+    /*grid-row:1;*/
     grid-row-gap:20%;
     row-gap:20%;
-    height:100%;
+    margin-bottom:3%;
 }
 
 /*divides .search into a grid system with 2 rows and 2 columns*/
@@ -87,7 +87,7 @@ margin: 2% 5%;
 /*title section on index*/
 .title
 {
-    grid-row:2;
+    grid-row:1;
     grid-row-gap:20%;
     row-gap:20%;
     text-align: center;
@@ -106,7 +106,7 @@ margin: 2% 5%;
 }
 .article
 {
-    grid-row:3;
+    grid-row:2;
     grid-row-gap:20%;
     row-gap:20%;
 }
@@ -141,7 +141,7 @@ margin: 2% 5%;
 .big
 {
     position: relative;
-    grid-row:2/4
+    grid-row:1/4
 
 }
 

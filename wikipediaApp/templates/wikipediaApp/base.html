@@ -10,53 +10,51 @@
     <title>Title</title>
 </head>
 <body class="bodyContainter">
-<div class="pageContainer">
-    {% if request.user.is_authenticated %}
-    <div class="search">
-        <div class="nav-grid">
-            <div class="period"></div>
-            <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
-            <div class="nav-bar card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class='nav-link active' href="{% url 'index' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
-                    </li>
-                </ul>
-            </div>
-            <div  class="searchbar">
-                <form action= "{% url 'search'  %}" method="GET">
-                    <input type="text" name=find placeholder="Search">
-                </form>
-            </div>
+{% if request.user.is_authenticated %}
+<div class="search">
+    <div class="nav-grid">
+        <div class="period"></div>
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link active' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <form action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
         </div>
     </div>
-
-    {% else %}
-    <div class="search">
-        <div class='nav-grid'>
-            <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
-            <div class="nav-bar card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class='nav-link active' href="{% url 'index' %}">Home</a>
-                    </li>
-                </ul>
-            </div>
+</div>
+{% else %}
+<div class="search">
+    <div class='nav-grid'>
+        <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link active' href="{% url 'index' %}">Home</a>
+                </li>
+            </ul>
+        </div>
         <div class="searchbar">
             <form class="searchbar-bottom" action= "{% url 'search'  %}" method="GET">
                 <input type="text" name=find placeholder="Search">
             </form>
         </div>
-        </div>
     </div>
-        {% endif %}
-
+</div>
+{% endif %}
+<div class="pageContainer">
     {% block body %}
     <div class="title">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer non accumsan diam, vitae dapibus lectus. Maecenas feugiat urna felis. Praesent purus ligula, scelerisque vitae suscipit feugiat, commodo sit amet mi. Vestibulum congue velit nulla, quis semper ligula venenatis vel. Vestibulum scelerisque est nisi, eget pretium neque laoreet quis. Donec elit purus, maximus et magna ut, rhoncus malesuada urna. Mauris lorem lacus, suscipit a elit non, viverra imperdiet massa. Vestibulum ullamcorper venenatis condimentum. Donec auctor urna sem, nec finibus ante rutrum quis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam et ipsum pellentesque, lobortis neque vitae, volutpat dolor. Donec quis magna nisl. Pellentesque fermentum rutrum massa a blandit.
