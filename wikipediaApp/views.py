@@ -223,6 +223,7 @@ def editRelated(request,ID): #edits related
                 'form':newRelated,
                 'errors':newRelated.errors,
                 'readArticle':showRelated,
+                'related':oldRelated,
             }
             return render(request,'wikipediaApp/editRelated.html',context)#renders the form with errors
     context={
@@ -230,6 +231,7 @@ def editRelated(request,ID): #edits related
         'readArticle':showRelated,
         'trueAuthor':trueAuthor,
         'oldArticle':test,
+        'related':oldRelated,
     }
     return render(request,'wikipediaApp/editRelated.html',context)
 
