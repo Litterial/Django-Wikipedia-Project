@@ -1,42 +1,218 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {% load static %}
-    <title>Title</title>
-</head>
-<body>
+{% extends 'wikipediaApp/base.html' %}
+
+{% load static %}
+{% block header %}
+{% if trueAuthor == oldArticle.key_to_User %}
 {% if readArticle %}
 {% for x in readArticle %}
-
-{{x.title}}<br>
-{{x.text}}<br>
-<a href="{% url 'editArticle' x.id%}">Edit article</a>
-<a href="{% url 'deleteArticle' x.id%}">Delete article</a><br>
-<h1>This article was created on {{x.date_created}}</h1>
-<h1>Last updated: {{x.last_update}}UTC</h1>
-<h1>Related Items</h1>
-<hr>
-{% if readRelated %}
-{% for y in readRelated %}
-{{y.title}}<br>
-{{y.text}}<br>
-{{y.date_created}}<br>
-{{y.last_update}}<br>
-{% if y.image %}}
-<img src="{{y.image.url}}">
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <div class=" readNav card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class='nav-link active ' href="{% url 'readArticle' x.id%}">Read</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class='nav-link' href="{% url 'editArticle' x.id %}">Edit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class='nav-link' href="{% url 'deleteArticle' x.id %}">Delete</a>
+                    </li>
+                </ul>
+            </div>
+            <form class='searchbar-inner' action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endif %}
-<a href="{% url 'editRelated' y.id %}">Edit Related</a>
-<a href="{% url 'deleteRelated' y.id %}">Delete Related</a>
+
+{% elif user.is_authenticated %}
+{% if readArticle %}
+{% for x in readArticle %}
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <div class=" readNav card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class='nav-link active ' href="{% url 'readArticle' x.id%}">Read</a>
+                    </li>
+                </ul>
+            </div>
+            <form action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% else %}
+{% if readArticle %}
+{% for x in readArticle %}
+<div class="search">
+    <div class='nav-grid'>
+        <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link active extrapadding' href="{% url 'readArticle' x.id %}">Read</a>
+                </li>
+            </ul>
+        </div>
+        <div class="searchbar">
+            <form class="logoutflex" action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endblock header %}
+{% block body %}
+
+{% if user.is_authenticated %}
+<div class="big readGrid">
+{% if readArticle %}
+{% for x in readArticle %}
+    <h1 class="readTitle">{{x.title}}</h1>
+
+<div class="text-margin">
+
+    {{x.text}}
+</div>
+{% if x.image %}
+    <div class= "img-grid">
+    <img class ='fixedimage morefixedimage' src="{{x.image.url}}">
+    </div>
+{% endif %}
+<footer class="update">
+<span> Date created:{{x.date_created}} UTC</span>
+<span>Last updated: {{x.last_update}} UTC</span>
+</footer>
+    <div class="sidebarGrid">
+        <h3 class="sidebarTitle">Related Items</h3>
+<hr>
+
+{% if readRelated %}
+
+{% for y in readRelated %}
+<div class="sidetext">
+<div class="relatedTitle">{{y.title}}</div>
+{% if y.image %}
+    <div class="relatedimg morefixedimage">
+<img class='morefixedimage'src="{{y.image.url}}">
+    </div>
+{% endif %}
+{{y.text}}<br>
+    <br>
+    {% if trueAuthor == oldArticle.key_to_User %}
+    Date created:{{y.date_created}} UTC<br>
+    Last updated:{{y.last_update}} UTC<br><br>
+<div class="relatedimg buttonmargin">
+<a class="editmargin" href="{% url 'editRelated' y.id %}"><button>Edit Related</button></a>
+    <a href="{% url 'deleteRelated' y.id %}"><button>Delete Related</button></a>
+</div>
+    {% endif %}
+</div>
 {% endfor %}
 {% else %}
 None
 {% endif %}
+{% if trueAuthor == oldArticle.key_to_User %}
 <a href="{% url 'createRelated' x.id %}">Create Related</a>
+ {% endif %}
 {% endfor %}
 {% else %}
 none
+</div>
 {% endif %}
+{% else %}
+    <div class="big readGrid">
+        {% if readArticle %}
+        {% for x in readArticle %}
+        <h1 class="readTitle">{{x.title}}</h1>
 
-</body>
-</html>
+        <div class="text-margin">
+
+            {{x.text}}
+        </div>
+        {% if x.image %}
+        <div class= "img-grid">
+            <img class="fixedimage" src="{{x.image.url}}">
+        </div>
+        {% endif %}
+        <footer class="update">
+            <span> Date created:{{x.date_created}} UTC</span>
+            <span>Last updated: {{x.last_update}} UTC</span>
+        </footer>
+        <div class="sidebarGrid">
+            <h3 class="sidebarTitle">Related Items</h3>
+            <hr>
+
+            {% if readRelated %}
+
+            {% for y in readRelated %}
+            <div class="sidetext">
+                <div class="relatedTitle">{{y.title}}</div>
+                {% if y.image %}
+                <div class="relatedimg morefixedimage">
+                    <img class='morefixedimage'src="{{y.image.url}}">
+                </div>
+                {% endif %}
+                {{y.text}}<br>
+                <br>
+
+            </div>
+            {% endfor %}
+            {% else %}
+            None
+            {% endif %}
+
+            {% endfor %}
+            {% else %}
+            none
+        </div>
+        {% endif %}
+</div>
+    {% endif %}
+</div>
+{% endblock body %}

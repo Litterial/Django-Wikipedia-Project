@@ -70,9 +70,9 @@ def createArticle(request): #creates new page, will create an id once created
                 'form':form,
                 'errors':form.errors
             }
-            return render(request,'wikipediaApp/createArticle2.html',context) #renders content on template with errors
+            return render(request,'wikipediaApp/createArticle.html',context) #renders content on template with errors
 
-    return render(request,'wikipediaApp/createArticle2.html',{'form':form})
+    return render(request,'wikipediaApp/createArticle.html',{'form':form})
 
 def readArticle(request,ID): #read individual articles
     if request.user.is_superuser:
@@ -88,7 +88,7 @@ def readArticle(request,ID): #read individual articles
             'oldArticle':oldArticle,
             'trueAuthor':trueAuthor,
         }
-        return render(request,'wikipediaApp/readArticle2.html',context)
+        return render(request,'wikipediaApp/readArticle.html',context)
     else:
         oldArticle=get_object_or_404(Article,pk=ID) #grabs the instance of an article
         readArticle=Article.objects.filter(id=ID)  #legacy code
@@ -99,7 +99,7 @@ def readArticle(request,ID): #read individual articles
             'oldArticle':oldArticle,
 
         }
-        return render(request,'wikipediaApp/readArticle2.html',context)
+        return render(request,'wikipediaApp/readArticle.html',context)
 
 @login_required
 def userArticles(request): #list all of  articles by the user
@@ -110,7 +110,7 @@ def userArticles(request): #list all of  articles by the user
     context={
         'userArticles':user_article
     }
-    return render (request,'wikipediaApp/userArticles2.html',context)
+    return render (request,'wikipediaApp/userArticles.html',context)
 
 @login_required
 def editArticle(request,ID): #edits page,needs id of instance
@@ -134,7 +134,7 @@ def editArticle(request,ID): #edits page,needs id of instance
                 'errors':newArticle.errors,
                 'readArticle':showArticle,
              }
-            return render(request,'wikipediaApp/editArticle2.html',context) #renders the form with errors
+            return render(request,'wikipediaApp/editArticle.html',context) #renders the form with errors
 
     context={
         'form':newArticle,
@@ -142,7 +142,7 @@ def editArticle(request,ID): #edits page,needs id of instance
         'trueAuthor':trueAuthor,
         'oldArticle':oldArticle,
     }
-    return render(request,'wikipediaApp/editArticle2.html',context) #renders on the editarticle page
+    return render(request,'wikipediaApp/editArticle.html',context) #renders on the editarticle page
 
 @login_required
 def deleteArticle(request,ID): #deletes article
@@ -163,7 +163,7 @@ def deleteArticle(request,ID): #deletes article
         'trueAuthor':trueAuthor,
         'readArticle':showArticle,
     }
-    return render(request,'wikipediaApp/deleteArticle2.html',context) #renders content on template
+    return render(request,'wikipediaApp/deleteArticle.html',context) #renders content on template
 
 @login_required
 def createRelated(request,ID): #creates related
@@ -224,14 +224,14 @@ def editRelated(request,ID): #edits related
                 'errors':newRelated.errors,
                 'readArticle':showRelated,
             }
-            return render(request,'wikipediaApp/editRelated2.html',context)#renders the form with errors
+            return render(request,'wikipediaApp/editRelated.html',context)#renders the form with errors
     context={
         'form':newRelated,
         'readArticle':showRelated,
         'trueAuthor':trueAuthor,
         'oldArticle':test,
     }
-    return render(request,'wikipediaApp/editRelated2.html',context)
+    return render(request,'wikipediaApp/editRelated.html',context)
 
 @login_required
 def deleteRelated(request,ID): #deletes related
@@ -253,7 +253,7 @@ def deleteRelated(request,ID): #deletes related
         'trueAuthor':trueAuthor,
         'oldArticle':parent_article,
     }
-    return render(request,'wikipediaApp/deleteRelated2.html',context) #renders on template
+    return render(request,'wikipediaApp/deleteRelated.html',context) #renders on template
 
 def search(request):
     if request.user.is_superuser:

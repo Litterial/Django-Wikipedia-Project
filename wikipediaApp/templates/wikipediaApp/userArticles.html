@@ -1,25 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{% if userArticles %}
-{% for x in userArticles %}
-<h1>Article</h1>
-<a href="{% url 'readArticle' x.id %}">{{x.title}}</a><br>
-{{x.date_created}}<br>
-{{x.last_update}}<br>
-{% if x.image %}
-<img src="{{x.image.url}}"><br>
-{% endif %}
-<a href="{% url 'editArticle' x.id%}">Edit article</a>
-<a href="{% url 'deleteArticle' x.id%}">Delete article</a><br>
-{% endfor %}
-{%else %}
-None
-{% endif %}
+{% extends 'wikipediaApp/base.html' %}
 
-</body>
-</html>
+{% load static %}
+{% block header %}
+{% if user.is_authenticated %}
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link active' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <form action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="search">
+    <div class='nav-grid'>
+        <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+    </div>
+    <div class="searchbar">
+        <form method="GET">
+            <input type="search" placeholder="search">
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock header %}
+
+{% block body %}
+<div class="big">
+    {% if userArticles %}
+    <h1 class="mid">Articles by {{user.username}}</h1>
+<div class="articleGrid">
+    {% for x in userArticles %}
+    <ul>
+        {% if x.image %}
+        <li class="list-group list-group-flush"><img class="fixedimage" src="{{x.image.url}}"></li>
+        {% endif %}
+        <li class="list-group list-group-flush"><h3><a class="font-weight-bolder" href="{% url 'readArticle' x.id %}">{{x.title}}</a></h3></li>
+    <li class="list-group list-group-flush"> Date Created:{{x.date_created}} UTC</li>
+    <li class="list-group list-group-flush"> Last Update:{{x.last_update}} UTC</li>
+    </ul>
+    {% endfor %}
+    {%else %}
+    None
+    {% endif %}
+</div>
+</div>
+{% endblock body %}

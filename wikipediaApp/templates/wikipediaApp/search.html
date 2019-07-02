@@ -1,7 +1,51 @@
-{% extends 'wikipediaApp/base6(search).html' %}
+{% extends 'wikipediaApp/base.html' %}
 
 {% load static %}
-
+{% block header %}
+{% if user.is_authenticated %}
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <form class='searchbar-inner' action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="search">
+    <div class='nav-grid'>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link extrapadding' href="{% url 'index' %}">Home</a>
+                </li>
+            </ul>
+        </div>
+        <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+        <div class="searchbar">
+            <form action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock header %}
 {% block body %}
 <div class="big blank">
     <p>Your search for - {{search}} - found {% if totalarticles == 1 %} {{totalarticles}} result. {% else %} {{totalarticles}} results. {% endif %}

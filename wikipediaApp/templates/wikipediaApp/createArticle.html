@@ -1,15 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    {% load static %}
-</head>
-<body>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>Submit</button>
-</form>
-</body>
-</html>
+{% extends 'wikipediaApp/base.html' %}
+
+{% load static %}
+{% block header %}
+{% if user.is_authenticated %}
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link active' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <form action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="search">
+    <div class='nav-grid'>
+        <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+        <div class="searchbar">
+            <form action= "{% url 'search'  %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock header %}
+{% block body %}
+
+<div class="big">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="formCenter">
+
+            <div>
+                <h3>{{ form.title.label_tag }} </h3>
+                <p>{{ form.title }}</p>
+            </div>
+            <div>
+                <h3>{{ form.text.label_tag }}</h3>
+                <p>{{ form.text }}</p>
+            </div>
+            <div>
+                <h3>{{ form.image.label_tag }}
+                    {{ form.image }}</h3>
+            </div> <div>
+            <p>{{ form.last_update.label_tag }}</p>
+            <p>{{ form.last_update }}</p>
+        </div>
+
+
+            <button><h3>Submit</h3></button>
+        </div>
+    </form>
+</div>
+{% endblock body %}
