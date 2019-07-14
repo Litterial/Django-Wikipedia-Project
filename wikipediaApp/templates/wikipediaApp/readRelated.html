@@ -1,0 +1,94 @@
+{% extends 'wikipediaApp/base.html' %}
+
+{% load static %}
+{% block header %}
+
+{% if related and article %}
+{% if author == article.key_to_User %}
+
+<div class="search">
+    <div class="nav-grid">
+        <div class='logged'><span class="logged-padding">Hi {{user.username}}</span> <a class="logged-padding" href="{% url 'logout' %}">Logout</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'createArticle' %}">New Entry</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'userArticles' %}">All User Entries</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="searchbar">
+            <div class=" readNav card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class='nav-link active ' href="{% url 'readRelated' article.id related.id%}">Read</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class='nav-link' href="{% url 'editRelated' related.id %}">Edit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class='nav-link' href="{% url 'deleteRelated' related.id %}">Delete</a>
+                    </li>
+                </ul>
+            </div>
+            <form class='searchbar-inner' action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% else %}
+
+<div class="search">
+    <div class='nav-grid'>
+        <div class='logged'><span class="logged-padding">Not Logged in</span><a class="logged-padding"href="{% url 'createAuthor' %}">Create a new user</a><a class="logged-padding"href="{% url 'login' %}">Sign In</a></div>
+        <div class="nav-bar card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class='nav-link' href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class='nav-link active extrapadding' href="{% url 'readRelated' article.id related.id %}">Read</a>
+                </li>
+            </ul>
+        </div>
+        <div class="searchbar">
+            <form class="logoutflex" action= "{% url 'search'  %}" method="GET">
+                <input type="text" name=find placeholder="Search">
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+{% endblock header %}
+
+
+{% block body %}
+<div class="big readGrid">
+    {% if related %}
+    <h1 class="readTitle">{{related.title}}</h1>
+
+    <div class="text-margin">
+
+        {{related.text}}
+    </div>
+    {% if related.image %}
+    <div class= "img-grid">
+        <img class="fixedimage" src="{{related.image.url}}">
+    </div>
+    {% endif %}
+    <footer class="update">
+        <span> Date created:{{related.date_created}} UTC</span>
+        <span>Last updated: {{related.last_update}} UTC</span>
+    </footer>
+    {% endif %}
+</div>
+{% endblock body %}

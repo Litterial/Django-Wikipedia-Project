@@ -3,7 +3,7 @@
 {% load static %}
 {% block header %}
 {% if user.is_authenticated %}
-{% if readArticle %}
+{% if readArticle and oldRelated %}
 {% for x in readArticle %}
 <div class="search">
     <div class="nav-grid">
@@ -25,13 +25,13 @@
             <div class=" readNav card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
-                        <a class='nav-link  ' href="{% url 'readArticle' x.id%}">Read</a>
+                        <a class='nav-link  ' href="{% url 'readRelated' x.id oldRelated.id%}">Read</a>
                     </li>
                     <li class="nav-item">
-                        <a class='nav-link ' href="{% url 'editArticle' x.id %}">Edit</a>
+                        <a class='nav-link ' href="{% url 'editRelated' oldRelated.id %}">Edit</a>
                     </li>
                     <li class="nav-item">
-                        <a class='nav-link active' href="{% url 'deleteArticle' x.id %}">Delete</a>
+                        <a class='nav-link active' href="{% url 'deleteRelated' oldRelated.id %}">Delete</a>
                     </li>
                 </ul>
             </div>
@@ -82,7 +82,7 @@
         {% csrf_token %}
         <button class="btn btn-danger">Yes</button>
     </form>
-    <a href="{% url 'readArticle' parentArticle.id %}"><button class="btn btn-primary">Cancel</button></a>
+    <a href="{% url 'readRelated' parentArticle.id oldRelated.id%}"><button class="btn btn-primary">Cancel</button></a>
     {% endif %}
     {% endif %}
 </div>

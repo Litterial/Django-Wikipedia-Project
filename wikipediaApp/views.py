@@ -197,6 +197,14 @@ def createRelated(request,ID): #creates related
         'trueAuthor':trueAuthor,
     }
     return render(request,'wikipediaApp/createRelated.html',context)
+def readRelated(request,parent,ID):
+    parentID=get_object_or_404(Article,pk=parent)
+    relatedID=get_object_or_404(Related,pk=ID)
+    print(relatedID)
+    print(parentID)
+    author=Author.objects.get(username=request.user)
+    context={'related':relatedID, 'article':parentID, 'author':author}
+    return render(request,'wikipediaApp/readRelated.html',context)
 
 @login_required
 def editRelated(request,ID): #edits related
