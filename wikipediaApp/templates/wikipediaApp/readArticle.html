@@ -125,8 +125,8 @@
     </div>
 {% endif %}
 <footer class="update">
-<span> Date created:{{x.date_created}} UTC</span>
-<span>Last updated: {{x.last_update}} UTC</span>
+<div> Date created:{{x.date_created|date:'F j, Y  G:i'}} UTC</div>
+<div>Last updated: {{x.last_update|date:'F j, Y  G:i'}} UTC</div>
 </footer>
     <div class="sidebarGrid">
         <h3 class="sidebarTitle">Related Items</h3>
@@ -136,17 +136,15 @@
 
 {% for y in readRelated %}
 <div class="sidetext">
-<div class="relatedTitle">{{y.title}}</div>
+    <div class="relatedTitle"><a href="{% url 'readRelated' x.id y.id %}">{{y.title}}</a></div>
 {% if y.image %}
     <div class="relatedimg morefixedimage">
 <img class='morefixedimage' src="{{y.image.url}}">
     </div>
 {% endif %}
-{{y.text}}<br>
+<br>
     <br>
     {% if trueAuthor == oldArticle.key_to_User %}
-    Date created:{{y.date_created}} UTC<br>
-    Last updated:{{y.last_update}} UTC<br><br>
 <div class="relatedimg buttonmargin">
 <a class="editmargin" href="{% url 'editRelated' y.id %}"><button class="btn btn-primary">Edit Related</button></a>
     <a href="{% url 'deleteRelated' y.id %}"><button class="btn btn-danger">Delete Related</button></a>
@@ -181,8 +179,8 @@ none
         </div>
         {% endif %}
         <footer class="update">
-            <span> Date created:{{x.date_created}} UTC</span>
-            <span>Last updated: {{x.last_update}} UTC</span>
+            <div> Date created:{{x.date_created|date:'F j, Y  G:i'}} UTC</div>
+            <div>Last updated: {{x.last_update|date:'F j, Y  G:i'}} UTC</div>
         </footer>
         <div class="sidebarGrid">
             <h3 class="sidebarTitle">Related Items</h3>
@@ -192,13 +190,13 @@ none
 
             {% for y in readRelated %}
             <div class="sidetext">
-                <div class="relatedTitle">{{y.title}}</div>
+                <div class="relatedTitle"><a href="{% url 'readRelated' x.id y.id %}">{{y.title}}</a></div>
                 {% if y.image %}
                 <div class="relatedimg morefixedimage">
                     <img class='morefixedimage' src="{{y.image.url}}">
                 </div>
                 {% endif %}
-                {{y.text}}<br>
+                <br>
                 <br>
 
             </div>

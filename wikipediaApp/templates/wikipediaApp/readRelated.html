@@ -86,8 +86,8 @@
     </div>
     {% endif %}
     <footer class="update">
-        <span> Date created:{{related.date_created}} UTC</span>
-        <span>Last updated: {{related.last_update}} UTC</span>
+        <div> Date created:{{related.date_created|date:'F j, Y  G:i'}} UTC</div>
+        <div>Last updated: {{related.last_update|date:'F j, Y  G:i'}} UTC</div>
     </footer>
     {% endif %}
 </div>

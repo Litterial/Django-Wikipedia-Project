@@ -262,6 +262,11 @@ textarea
     text-align: center;
     font-size: 1.5rem;
 }
+.relatedTitle a
+{
+    color:black;
+    text-decoration-line: none;
+}
 .relatedimg
 
 {
