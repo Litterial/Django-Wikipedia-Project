@@ -148,8 +148,8 @@
     Date created:{{y.date_created}} UTC<br>
     Last updated:{{y.last_update}} UTC<br><br>
 <div class="relatedimg buttonmargin">
-<a class="editmargin" href="{% url 'editRelated' y.id %}"><button>Edit Related</button></a>
-    <a href="{% url 'deleteRelated' y.id %}"><button>Delete Related</button></a>
+<a class="editmargin" href="{% url 'editRelated' y.id %}"><button class="btn btn-primary">Edit Related</button></a>
+    <a href="{% url 'deleteRelated' y.id %}"><button class="btn btn-danger">Delete Related</button></a>
 </div>
     {% endif %}
 </div>

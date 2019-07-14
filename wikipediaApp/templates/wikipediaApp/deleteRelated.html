@@ -80,9 +80,9 @@
     <br>
     <form class="inline-form" method="post">
         {% csrf_token %}
-        <button>Yes</button>
+        <button class="btn btn-danger">Yes</button>
     </form>
-    <a href="{% url 'readArticle' parentArticle.id %}"><button>Cancel</button></a>
+    <a href="{% url 'readArticle' parentArticle.id %}"><button class="btn btn-primary">Cancel</button></a>
     {% endif %}
     {% endif %}
 </div>
