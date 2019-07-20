@@ -1,6 +1,13 @@
 {% extends 'wikipediaApp/base.html' %}
 
 {% load static %}
+{% block title %}
+{% if readArticle %}
+{% for x in readArticle %}
+Editing source for {{x.title}} | Memphis Wiki
+{% endfor %}
+{% endif %}
+{% endblock title %}
 {% block header %}
 {% if user.is_authenticated %}
 {% if readArticle %}

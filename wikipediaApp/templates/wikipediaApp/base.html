@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="{% static 'wikipediaApp/css/base.css' %}">
     <script src="{% static 'wikipediaApp/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'wikipediaApp/js/bootstrap.js' %}"></script>
-    <title>Title</title>
+
+    <title>{% block title %}Memphis Wiki{% endblock title %}</title>
+
 </head>
 <body class="bodyContainter">
 {% block header %}

@@ -1,6 +1,9 @@
 {% extends 'wikipediaApp/base.html' %}
 
 {% load static %}
+{% block title %}
+Register | Memphis Wiki
+{% endblock title %}
 {% block header %}
 {% if user.is_authenticated %}
 <div class="search">
