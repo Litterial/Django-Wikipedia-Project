@@ -198,11 +198,13 @@ def createRelated(request,ID): #creates related
     }
     return render(request,'wikipediaApp/createRelated.html',context)
 def readRelated(request,parent,ID):
+    author=""
     parentID=get_object_or_404(Article,pk=parent)
     relatedID=get_object_or_404(Related,pk=ID)
     print(relatedID)
     print(parentID)
-    author=Author.objects.get(username=request.user)
+    if request.user.is_authenticated:
+        author=Author.objects.get(username=request.user)
     context={'related':relatedID, 'article':parentID, 'author':author}
     return render(request,'wikipediaApp/readRelated.html',context)
 
